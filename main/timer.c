@@ -56,33 +56,45 @@ void deinit_timer();
 **********************************************************************/
 
 /*
-  void timer_init()
+  boolean timer_is_elapsed32( uint32 *time )
 
-  Initializes the timer handlers.
+    Checks whether or not your scheduled action time has elapsed.
+    Returns the time read out as part of the check.
 */
-void timer_init()
+boolean timer_is_elapsed32 ( uint32 action_time, uint32 *time_readback )
 {
-	/* Open file to memory */			
-	fd = open("/dev/mem", O_RDONLY);
-  if ( fd == -1 )
+  boolean time_expired = FALSE;
+
+  uint32 time = read_timer32();
+  *time_readback = time;
+
+  if ( (uint32)(time - action_time) < (uint32)MAX_INT/2 )
   {
-    fprintf(stderr, "open() failed. \n");
-	}
+    time_expired = TRUE;
+  }
 
-  /* Memory map the system timer */
-	timer_base_addr =
-	  (uint32)( mmap(NULL, TIMER_PAGE_SIZE, PROT_READ,
-	                 MAP_SHARED, fd, TIMER_BASE_ADDR) );
-  if ( (void*)timer_base_addr == MAP_FAILED )
-	{
-	  fprintf(stderr, "mmap() failed. \n");
-	}
+  return time_expired;
+}
 
-  /* Set global addresses */
-  timer_32lsb_addr = timer_base_addr +
-	                   TIMER_32LSB_OFFSET_ADDR;
-	timer_32msb_addr = timer_base_addr +
-	                   TIMER_32MSB_OFFSET_ADDR;
+/*
+  boolean timer_is_elapsed64( uint64 *time )
+
+    Checks whether or not your scheduled action time has elapsed.
+    Returns the time read out as part of the check.
+*/
+boolean timer_is_elapsed64 ( uint64 action_time, uint64 *time_readback )
+{
+  boolean time_expired = FALSE;
+
+  uint64 time = read_timer64();
+  *time_readback = time;
+
+  if ( (uint64)(time - action_time) < (uint64)MAX_LONGINT/2 )
+  {
+    time_expired = TRUE;
+  }
+
+  return time_expired;
 }
 
 /*
@@ -95,11 +107,11 @@ uint64 read_timer64()
 {
   uint32 lsb, msb, msb_2;
   do
-	{
-	  msb   = *((volatile uint32 *)timer_32msb_addr);
-	  lsb   = *((volatile uint32 *)timer_32lsb_addr);
+  {
+    msb   = *((volatile uint32 *)timer_32msb_addr);
+    lsb   = *((volatile uint32 *)timer_32lsb_addr);
       msb_2 = *((volatile uint32 *)timer_32msb_addr);
-	} while (msb != msb_2);
+  } while (msb != msb_2);
   return ( (uint64)msb << 32 | lsb );
 }
 
@@ -114,6 +126,36 @@ uint32 read_timer32()
   return ( *((volatile uint32 *)timer_32lsb_addr) );
 }
 
+/*
+  void timer_init()
+
+  Initializes the timer handlers.
+*/
+void timer_init()
+{
+  /* Open file to memory */     
+  fd = open("/dev/mem", O_RDONLY);
+  if ( fd == -1 )
+  {
+    fprintf(stderr, "open() failed. \n");
+  }
+
+  /* Memory map the system timer */
+  timer_base_addr =
+    (uint32)( mmap(NULL, TIMER_PAGE_SIZE, PROT_READ,
+                   MAP_SHARED, fd, TIMER_BASE_ADDR) );
+  if ( (void*)timer_base_addr == MAP_FAILED )
+  {
+    fprintf(stderr, "mmap() failed. \n");
+  }
+
+  /* Set global addresses */
+  timer_32lsb_addr = timer_base_addr +
+                     TIMER_32LSB_OFFSET_ADDR;
+  timer_32msb_addr = timer_base_addr +
+                     TIMER_32MSB_OFFSET_ADDR;
+}
+
 /* 
   void timer_deinit()
 
@@ -124,14 +166,14 @@ void timer_deinit()
   /* Unmap system timer memory */
   int32 err = munmap((void*)timer_base_addr, TIMER_PAGE_SIZE);
   if ( err == -1 )
-	{
+  {
     fprintf(stderr, "munmap() failed. \n");
-	}
+  }
 
-	/* Close file */
+  /* Close file */
   err = close(fd);
-	if ( err == -1 )
-	{
-	  fprintf(stderr, "close() failed. \n");
-	}
+  if ( err == -1 )
+  {
+    fprintf(stderr, "close() failed. \n");
+  }
 }
