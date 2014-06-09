@@ -31,6 +31,10 @@ int main()
   /* Main Program Loop */
   while (1)
   {
+    
+    /* Test reading 64-bit timer */
+    uint64 t1 = read_timer64();
+    debug_printf(DEBUG_MODULE_DEBUG, "read_timer64 0x%x", t1);
 
   }
 
