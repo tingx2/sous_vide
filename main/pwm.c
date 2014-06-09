@@ -16,18 +16,18 @@ void pwm_init()
 	int ret_val= bcm2835_init();
   // add error handling
 
-	bcm2835_gpio_fsel(PIN, BCM2835_GPIO_FSEL_OUTP);;
+	bcm2835_gpio_fsel(PIN, BCM2835_GPIO_FSEL_OUTP);
 }
 
 void pwm_run(uint32 duty_cycle)
 {
-	int cur_time = read_timer32(); 
-	if(cur_time>time_high_thres)
+	int cur_time = read_timer32();
+	if(cur_time>time_high_thres && cur_time-time_high_thres < 0xFFFFFFFF/2)
 	{
 		pwm_update_duty(duty_cycle);
 		bcm2835_gpio_write(PIN, HIGH);
 	}
-	else if (cur_time>time_low_thres)
+	else if (cur_time>time_low_thres && cur_time - time_low_thres < 0xFFFFFFFF/2)
 		bcm2835_gpio_write(PIN, LOW);
 
 }
