@@ -3,10 +3,12 @@
 
 #include "types.h"
 
-void pwm_init();
+void pwm_init(uint32 freq);
 
-void pwm_run(uint32 duty_cycle);
+void pwm_run();
 
 void pwm_update_duty(uint32 duty_cycle);
+
+void pwm_update_timer();
 
 #endif

@@ -15,7 +15,7 @@ static uint32 time_low_thres_incre;
 void pwm_init(uint32 freq)
 {
   freq_hz=freq;
-	int ret_val= bcm2835_init();
+	bcm2835_init();
   // add error handling
 
 	bcm2835_gpio_fsel(PIN, BCM2835_GPIO_FSEL_OUTP);
@@ -31,7 +31,6 @@ void pwm_run()
 	}
 	else if (cur_time - time_low_thres < 0xFFFFFFFF/2)
 		bcm2835_gpio_write(PIN, LOW);
-
 }
 
 void pwm_timer_update()
