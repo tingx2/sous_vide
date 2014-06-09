@@ -26,10 +26,10 @@
 static FILE *debug_file;
 
 /* Debug module list */
-static char debug_module_names[DEBUG_MODULE_LAST][12] =
+static char debug_module_names[DEBUG_MODULE_LAST+1][12] =
 {
   "DEBUG",
-  "PID"
+  "PID",
   "TIMER",
   "PWM",
 };
@@ -41,7 +41,7 @@ static char debug_module_names[DEBUG_MODULE_LAST][12] =
 ***********************************************************************/
 
 /*
-  void debug_printf_int()
+  void debug_fprintf()
 
   Logs to file a debug message.
 */
@@ -58,7 +58,7 @@ void debug_fprintf(uint32 module, const char * format, ...)
 }
 
 /*
-  void debug_printf_int()
+  void debug_printf()
 
   Logs to stdio a debug message.
 */
@@ -75,6 +75,21 @@ void debug_printf(uint32 module, const char * format, ...)
 }
 
 /*
+  void debug_err_printf()
+
+  Prints error message.
+*/
+void debug_err_printf(const char * format, ...)
+{
+  va_list args;
+  va_start (args, format);
+
+  vfprintf(stderr, format, args);
+
+  va_end(args);
+}
+
+/*
   void debug_init()
 
   Opens the file handle for
@@ -83,12 +98,14 @@ void debug_printf(uint32 module, const char * format, ...)
 */
 void debug_init()
 {
-  debug_file = fopen("debug.txt","w");
+  debug_file = fopen("cook.log","w");
   
   if ( debug_file == NULL )
   {
-    fprintf(stderr, "fopen() failed.\n");
+    debug_err_printf("debug_init::fopen() failed.");
   }
+
+  debug_fprintf(DEBUG_MODULE_DEBUG, "debug_init() complete.");
 }
 
 /*
@@ -99,5 +116,12 @@ void debug_init()
 */
 void debug_deinit()
 {
-  fclose(debug_file);
+  int32 ret_val = fclose(debug_file);
+
+  if ( ret_val != 0 )
+  {
+    debug_err_printf("debug_deinit::fclose() failed.");
+  }
+
+  debug_fprintf(DEBUG_MODULE_DEBUG, "debug_deinit() complete.");
 }

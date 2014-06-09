@@ -15,6 +15,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include "timer.h"
+#include "debug.h"
 
 /**********************************************************************
 
@@ -44,11 +45,6 @@ static uint32 timer_32msb_addr;
 
 **********************************************************************/
 
-void init_timer();
-uint64 read_timer64();
-uint32 read_timer32();
-void deinit_timer();
-
 /**********************************************************************
 
   Functions
@@ -65,7 +61,7 @@ boolean timer_is_elapsed32 ( uint32 action_time, uint32 *time_readback )
 {
   boolean time_expired = FALSE;
 
-  uint32 time = read_timer32();
+  uint32 time = timer_read32();
   *time_readback = time;
 
   if ( (uint32)(time - action_time) < (uint32)MAX_INT/2 )
@@ -86,7 +82,7 @@ boolean timer_is_elapsed64 ( uint64 action_time, uint64 *time_readback )
 {
   boolean time_expired = FALSE;
 
-  uint64 time = read_timer64();
+  uint64 time = timer_read64();
   *time_readback = time;
 
   if ( (uint64)(time - action_time) < (uint64)MAX_LONGINT/2 )
@@ -98,30 +94,30 @@ boolean timer_is_elapsed64 ( uint64 action_time, uint64 *time_readback )
 }
 
 /*
-  void read_timer64()
+  void timer_read64()
 
   Reads the full 64-bit Raspberry PI system
   timer - 1MHz frequency.
 */
-uint64 read_timer64()
+uint64 timer_read64()
 {
   uint32 lsb, msb, msb_2;
   do
   {
     msb   = *((volatile uint32 *)timer_32msb_addr);
     lsb   = *((volatile uint32 *)timer_32lsb_addr);
-      msb_2 = *((volatile uint32 *)timer_32msb_addr);
+    msb_2 = *((volatile uint32 *)timer_32msb_addr);
   } while (msb != msb_2);
   return ( (uint64)msb << 32 | lsb );
 }
 
 /* 
-  void read_timer32()
+  void timer_read32()
   
   Read the full 32-bit Raspberry PI system
   timer - 1MHz frequency.
 */
-uint32 read_timer32()
+uint32 timer_read32()
 {
   return ( *((volatile uint32 *)timer_32lsb_addr) );
 }
@@ -137,7 +133,7 @@ void timer_init()
   fd = open("/dev/mem", O_RDONLY);
   if ( fd == -1 )
   {
-    fprintf(stderr, "open() failed. \n");
+    debug_err_printf("timer_init::open() failed.");
   }
 
   /* Memory map the system timer */
@@ -146,7 +142,7 @@ void timer_init()
                    MAP_SHARED, fd, TIMER_BASE_ADDR) );
   if ( (void*)timer_base_addr == MAP_FAILED )
   {
-    fprintf(stderr, "mmap() failed. \n");
+    debug_err_printf("timer_init::mmap() failed.");
   }
 
   /* Set global addresses */
@@ -154,6 +150,8 @@ void timer_init()
                      TIMER_32LSB_OFFSET_ADDR;
   timer_32msb_addr = timer_base_addr +
                      TIMER_32MSB_OFFSET_ADDR;
+
+  debug_fprintf(DEBUG_MODULE_TIMER, "timer_init() complete.");
 }
 
 /* 
@@ -167,13 +165,15 @@ void timer_deinit()
   int32 err = munmap((void*)timer_base_addr, TIMER_PAGE_SIZE);
   if ( err == -1 )
   {
-    fprintf(stderr, "munmap() failed. \n");
+    debug_err_printf("time_deinit::munmap() failed.");
   }
 
   /* Close file */
   err = close(fd);
   if ( err == -1 )
   {
-    fprintf(stderr, "close() failed. \n");
+    debug_err_printf("timer_deinit::close() failed.");
   }
+
+  debug_fprintf(DEBUG_MODULE_TIMER, "timer_deinit() complete.");
 }
