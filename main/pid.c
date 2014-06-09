@@ -1,7 +1,7 @@
 /* 
   pid.c
 
-	Source file for PID related routines.
+    Source file for PID related routines.
 
 */
 
@@ -22,32 +22,32 @@
 
 /*
   Control Loop
-	Error Parameters
+    Error Parameters
 
   err   : Current Error
-	err_i : Integral Error
-	err_d : Derivative Error
+    err_i : Integral Error
+    err_d : Derivative Error
 */
 typedef struct
 {
   float err;
-	float err_i;
-	float err_d;
+  float err_i;
+  float err_d;
 } pid_error_params;
 
 /*
   Main Global Structure
 
-	Contains functional parameters
-	used in the contro loop.
+    Contains functional parameters
+    used in the contro loop.
 */
 typedef struct 
 {
-	pid_gain_params gain;   	 			/* Loop parameters */	
-  pid_error_params error;  			/* Error parameters */
-  float temp_setpoint;      			/* Desired temperature (in Celsius) */
-	float temp_current;       			/* Current Temperature */
-  float pid_output_raw;         	/* PID output */
+  pid_gain_params gain;             /* Loop parameters */   
+  pid_error_params error;           /* Error pameters */
+  float temp_setpoint;              /* Desired temperature (in Celsius) */
+  float temp_current;               /* Current Temperature */
+  float pid_output_raw;             /* PID output */
 } pid_main_params;
 
 /**********************************************************************
@@ -77,8 +77,8 @@ void pid_update_output_raw(float pid_output);
 /*
   pid_gain_params *pid_get_gain()
 
-	Returns a pointer to the gain
-	parameters of the control loop.
+    Returns a pointer to the gain
+    parameters of the control loop.
 */
 pid_gain_params *pid_get_gain()
 {
@@ -88,8 +88,8 @@ pid_gain_params *pid_get_gain()
 /*
   pid_error_params *get_error()
 
-	Returns a pointer to the error
-	parameters of the control loop.
+    Returns a pointer to the error
+    parameters of the control loop.
 */
 pid_error_params *pid_get_error()
 {
@@ -99,7 +99,7 @@ pid_error_params *pid_get_error()
 /*
   float pid_get_temp_setpoint()
 
-	Gets the set temperature.
+    Gets the set temperature.
 */
 float pid_get_temp_setpoint()
 {
@@ -109,8 +109,8 @@ float pid_get_temp_setpoint()
 /* 
   float pid_get_temp_current();
 
-	Gets the current temperature
-	read out by the sensor.
+    Gets the current temperature
+    read out by the sensor.
 */
 float pid_get_temp_current()
 {
@@ -120,8 +120,8 @@ float pid_get_temp_current()
 /*
   float pid_get_pid_output_raw()
 
-	Gets the latest PID
-	output calculated.
+    Gets the latest PID
+    output calculated.
 */
 float pid_get_pid_output_raw()
 {
@@ -131,8 +131,8 @@ float pid_get_pid_output_raw()
 /*
   float pid_update_temp_current
 
-	Updates the current temperature
-	in the control loop.
+    Updates the current temperature
+    in the control loop.
 */
 void pid_update_temp_current(float temp)
 {
@@ -142,8 +142,8 @@ void pid_update_temp_current(float temp)
 /*
   float pid_update_temp_setpoint
 
-	Updates the desired temperature
-	to be reached by the control loop.
+    Updates the desired temperature
+    to be reached by the control loop.
 */
 void pid_update_temp_setpoint(float temp)
 {
@@ -153,7 +153,7 @@ void pid_update_temp_setpoint(float temp)
 /*
   float pid_update_output_raw
 
-	Updates the PID output value.
+    Updates the PID output value.
 */
 void pid_update_output_raw(float pid_output)
 {
@@ -163,33 +163,33 @@ void pid_update_output_raw(float pid_output)
 /*
   void pid_loop()
 
-	Calculates the updated PID
-	output and parameters for each
-	iteration.
+    Calculates the updated PID
+    output and parameters for each
+    iteration.
 */
 void pid_loop()
 {
   pid_gain_params *gain_p =
-	  pid_get_gain();
+      pid_get_gain();
 
   pid_error_params *error_p =
-	  pid_get_error();
+      pid_get_error();
 
-	float t_current =
-	  pid_get_temp_current();
+    float t_current =
+      pid_get_temp_current();
 
   float t_desired =
-	  pid_get_temp_setpoint();
+      pid_get_temp_setpoint();
 
   /* Core PID Loop */
   error_p->err   = t_current - t_desired;
-	error_p->err_i = error_p->err_i + error_p->err;
-	error_p->err_d = error_p->err   - error_p->err_d;
+    error_p->err_i = error_p->err_i + error_p->err;
+    error_p->err_d = error_p->err   - error_p->err_d;
 
-	float p, i, d;
-	p = gain_p->k_p * error_p->err;
-	i = gain_p->k_i * error_p->err_i;
-	d = gain_p->k_d * error_p->err_d;
+    float p, i, d;
+    p = gain_p->k_p * error_p->err;
+    i = gain_p->k_i * error_p->err_i;
+    d = gain_p->k_d * error_p->err_d;
 
   pid_update_output_raw( p+i+d );
 }
