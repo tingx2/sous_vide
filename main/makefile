@@ -25,7 +25,7 @@ main.o: main.c types.h timer.h debug.h pid.h pwm.h
 timer.o: timer.c timer.h types.h debug.h
 	$(CC) $(CFLAGS) -c timer.c
 
-debug.o: debug.c debug.h types.h
+debug.o: debug.c debug.h types.h timer.h
 	$(CC) $(CFLAGS) -c debug.c
 
 pid.o: pid.c pid.h types.h debug.h timer.h pwm.h

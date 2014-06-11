@@ -32,7 +32,7 @@ int main()
   debug_init();     /* This should be first. */
   timer_init();
   pwm_init();
-  pwn_set_duty(25);
+  pwm_set_duty(25);
 
   /* Main Program Loop */
   while (1)

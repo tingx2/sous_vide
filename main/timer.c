@@ -133,7 +133,7 @@ void timer_init()
   fd = open("/dev/mem", O_RDONLY);
   if ( fd == -1 )
   {
-    debug_err_printf("timer_init::open() failed.");
+    DEBUG_MSG_ERROR("timer_init::open() failed.");
   }
 
   /* Memory map the system timer */
@@ -142,7 +142,7 @@ void timer_init()
                    MAP_SHARED, fd, TIMER_BASE_ADDR) );
   if ( (void*)timer_base_addr == MAP_FAILED )
   {
-    debug_err_printf("timer_init::mmap() failed.");
+    DEBUG_MSG_ERROR("timer_init::mmap() failed.");
   }
 
   /* Set global addresses */
@@ -151,7 +151,7 @@ void timer_init()
   timer_32msb_addr = timer_base_addr +
                      TIMER_32MSB_OFFSET_ADDR;
 
-  debug_fprintf(DEBUG_MODULE_TIMER, "timer_init() complete.");
+  DEBUG_MSG_NOTIME(DEBUG_MODULE_TIMER, "timer_init() complete.");
 }
 
 /* 
@@ -165,15 +165,15 @@ void timer_deinit()
   int32 err = munmap((void*)timer_base_addr, TIMER_PAGE_SIZE);
   if ( err == -1 )
   {
-    debug_err_printf("time_deinit::munmap() failed.");
+    DEBUG_MSG_ERROR("time_deinit::munmap() failed.");
   }
 
   /* Close file */
   err = close(fd);
   if ( err == -1 )
   {
-    debug_err_printf("timer_deinit::close() failed.");
+    DEBUG_MSG_ERROR("timer_deinit::close() failed.");
   }
 
-  debug_fprintf(DEBUG_MODULE_TIMER, "timer_deinit() complete.");
+  DEBUG_MSG_NOTIME(DEBUG_MODULE_TIMER, "timer_deinit() complete.");
 }

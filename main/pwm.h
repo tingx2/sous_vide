@@ -51,7 +51,7 @@ void pwm_deinit();
 
   Duty cycle range is [0 - 100]
 */
-void pwn_set_duty(uint32 duty);
+void pwm_set_duty(uint32 duty);
 
 /*
   void pwm_run()

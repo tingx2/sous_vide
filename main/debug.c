@@ -14,6 +14,7 @@
 #include "types.h"
 #include "stdio.h"
 #include "stdarg.h"
+#include "timer.h"
 #include "debug.h"
 
 /***********************************************************************
@@ -22,11 +23,16 @@
 
 ***********************************************************************/
 
+#if (DEBUG_CURRENT_OUTPUT == DEBUG_OUTPUT_FILE)
 /* Debug log */
 static FILE *debug_file;
+#endif // DEBUG_OUTPUT_FILE
 
-/* Debug module list */
-static char debug_module_names[DEBUG_MODULE_LAST+1][12] =
+/* Debug module list
+   Names should shorter than 8 characters in length, 
+   otherwise expand the array size and update padding
+   in debug_fprintf and debug_printf. */
+static char debug_module_names[DEBUG_MODULE_LAST+1][8] =
 {
   "DEBUG",
   "PID",
@@ -41,23 +47,6 @@ static char debug_module_names[DEBUG_MODULE_LAST+1][12] =
 ***********************************************************************/
 
 /*
-  void debug_fprintf()
-
-  Logs to file a debug message.
-*/
-void debug_fprintf(uint32 module, const char * format, ...)
-{
-  va_list args;
-  va_start (args, format);
- 
-  fprintf(debug_file, "%-12s: ", debug_module_names[module]);
-  vfprintf(debug_file, format, args);
-  fprintf(debug_file, "\n");
-
-  va_end(args);
-}
-
-/*
   void debug_printf()
 
   Logs to stdio a debug message.
@@ -67,9 +56,44 @@ void debug_printf(uint32 module, const char * format, ...)
   va_list args;
   va_start (args, format);
 
-  printf("%-12s: ", debug_module_names[module]);
+  uint32 timestamp = timer_read32();
+
+#if (DEBUG_CURRENT_OUTPUT == DEBUG_OUTPUT_FILE)
+  fprintf(debug_file, "%-8s: %10u : ", debug_module_names[module], timestamp);
+  vfprintf(debug_file, format, args);
+  fprintf(debug_file, "\n");
+#elif (DEBUG_CURRENT_OUTPUT == DEBUG_OUTPUT_STDIO)
+  printf("%-8s: %10u : ", debug_module_names[module], timestamp);
   vprintf(format, args);
   printf("\n");
+#else
+  #warning "No debug_printf behavior defined.";
+#endif
+
+  va_end(args);
+}
+
+/*
+  void debug_printf_notime()
+
+  Logs to stdio a debug message.
+*/
+void debug_printf_notime(uint32 module, const char * format, ...)
+{
+  va_list args;
+  va_start (args, format);
+
+#if (DEBUG_CURRENT_OUTPUT == DEBUG_OUTPUT_FILE)
+  fprintf(debug_file, "%-8s: %10d : ", debug_module_names[module], -1);
+  vfprintf(debug_file, format, args);
+  fprintf(debug_file, "\n");
+#elif (DEBUG_CURRENT_OUTPUT == DEBUG_OUTPUT_STDIO)
+  printf("%-8s: %10d : ", debug_module_names[module], -1);
+  vprintf(format, args);
+  printf("\n");
+#else
+  #warning "No debug_printf behavior defined.";
+#endif
 
   va_end(args);
 }
@@ -98,14 +122,16 @@ void debug_err_printf(const char * format, ...)
 */
 void debug_init()
 {
+#if (DEBUG_CURRENT_OUTPUT == DEBUG_OUTPUT_FILE)
   debug_file = fopen("cook.log","w");
   
   if ( debug_file == NULL )
   {
-    debug_err_printf("debug_init::fopen() failed.");
+    DEBUG_MSG_ERROR("debug_init::fopen() failed.");
   }
+#endif // DEBUG_OUTPUT_FILE
 
-  debug_fprintf(DEBUG_MODULE_DEBUG, "debug_init() complete.");
+  DEBUG_MSG_NOTIME(DEBUG_MODULE_DEBUG, "debug_init() complete.");
 }
 
 /*
@@ -116,12 +142,14 @@ void debug_init()
 */
 void debug_deinit()
 {
+#if (DEBUG_CURRENT_OUTPUT == DEBUG_OUTPUT_FILE)
   int32 ret_val = fclose(debug_file);
 
   if ( ret_val != 0 )
   {
-    debug_err_printf("debug_deinit::fclose() failed.");
+    DEBUG_MSG_ERROR("debug_deinit::fclose() failed.");
   }
+#endif // DEBUG_OUTPUT_FILE
 
-  debug_fprintf(DEBUG_MODULE_DEBUG, "debug_deinit() complete.");
+  DEBUG_MSG_NOTIME(DEBUG_MODULE_DEBUG, "debug_deinit() complete.");
 }

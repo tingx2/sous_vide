@@ -108,7 +108,7 @@ void pwm_run()
     bcm2835_gpio_clr(PWM_GPIO_PIN);
   }
 
-  debug_fprintf(DEBUG_MODULE_PWM, "Toggle @ time: 0x%x to %d", curr_time, (uint32)pwm_pin_state);
+  DEBUG_MSG_HIGH(DEBUG_MODULE_PWM, "Toggle heating pin to %d", (uint32)pwm_pin_state);
 }
 
 /*
@@ -132,20 +132,20 @@ void pwm_start()
 }
 
 /*
-  void pwn_set_duty()
+  void pwm_set_duty()
 
   Sets the action time increments
   based on the duty cycle.
 
   Duty cycle range is [0 - 100]
 */
-void pwn_set_duty(uint32 duty)
+void pwm_set_duty(uint32 duty)
 {
   pwm_time_duration_high = PWM_TIME_UNIT * duty;
   pwm_time_duration_low  = PWM_TIME_UNIT * (PWM_MAX_DUTY_CYCLE - duty);
   pwm_current_duty       = duty;
 
-  debug_fprintf(DEBUG_MODULE_PWM, "Duty cycle update, duty: %d, high_duration: %d, low_duration: %d", 
+  DEBUG_MSG_MID(DEBUG_MODULE_PWM, "Duty cycle update, duty: %d, high_duration: %d, low_duration: %d", 
                 duty, pwm_time_duration_high, pwm_time_duration_low);
 }
 
@@ -159,7 +159,7 @@ void pwm_init()
   uint32 ret_val = bcm2835_init();
   if ( ret_val == 0 )
   {
-    debug_err_printf("pwm_init::bcm2835_init() failed.");
+    DEBUG_MSG_ERROR("pwm_init::bcm2835_init() failed.");
   }
 
   bcm2835_gpio_fsel(PWM_GPIO_PIN, BCM2835_GPIO_FSEL_OUTP);
@@ -172,7 +172,7 @@ void pwm_init()
 
   pwm_start();
 
-  debug_fprintf(DEBUG_MODULE_PWM, "pwm_init() complete.");
+  DEBUG_MSG_NOTIME(DEBUG_MODULE_PWM, "pwm_init() complete.");
 }
 
 /*
@@ -187,8 +187,8 @@ void pwm_deinit()
   uint32 ret_val = bcm2835_close();
   if ( ret_val == 0 )
   {
-    debug_err_printf("pwm_deinit::bcm2835_close() failed.");
+    DEBUG_MSG_ERROR("pwm_deinit::bcm2835_close() failed.");
   }
 
-  debug_fprintf(DEBUG_MODULE_PWM, "pwm_deinit() complete.");
+  DEBUG_MSG_NOTIME(DEBUG_MODULE_PWM, "pwm_deinit() complete.");
 }
