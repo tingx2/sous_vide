@@ -9,33 +9,30 @@ CC = gcc
 
 # Compiler flags
 # -Wall : turns on all compiler warnings
-CFLAGS = -Wall -lrt
+CFLAGS = -Wall
 
 # Target executable
 TARGET = cook 
 
 all: $(TARGET)
 
-$(TARGET): main.o timer.o temp.o pwm.o debug.o pid.o
-	$(CC) $(CFLAGS) main.o timer.o debug.o temp.o pwm.o pid.o -lbcm2835 -o $(TARGET)
+$(TARGET): main.o timer.o debug.o pid.o pwm.o
+	$(CC) $(CFLAGS) main.o timer.o debug.o pid.o pwm.o -lbcm2835 -lrt -o $(TARGET)
 
-main.o: main.c types.h timer.h debug.h pid.h
+main.o: main.c types.h timer.h debug.h pid.h pwm.h
 	$(CC) $(CFLAGS) -c main.c
 
-timer.o: timer.c types.h timer.h
+timer.o: timer.c timer.h types.h debug.h
 	$(CC) $(CFLAGS) -c timer.c
 
-temp.o: temp.c temp.h
-	$(CC) $(CFLAGS) -c temp.c
+debug.o: debug.c debug.h types.h timer.h
+	$(CC) $(CFLAGS) -c debug.c
 
-pwm.o: pwm.c pwm.h timer.h
+pid.o: pid.c pid.h types.h debug.h timer.h pwm.h
+	$(CC) $(CFLAGS) -c pid.c
+
+pwm.o: pwm.c pwm.h types.h debug.h timer.h
 	$(CC) $(CFLAGS) -c pwm.c
-
-debug.o: debug.c types.h debug.h
-	$(CC) $(CFAGS) -c debug.c
-
-pid.o: pid.c types.h pid.h
-	$(CC) $(CFAGS) -c pid.c
 
 clean:
 	rm -rf *o $(TARGET)

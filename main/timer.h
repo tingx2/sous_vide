@@ -17,6 +17,13 @@
 
 /*********************************************************************
 
+  Timer Definitions
+
+*********************************************************************/
+#define TIMER_FREQ_HZ   1000000
+
+/*********************************************************************
+
   Function Prototypes
 
 *********************************************************************/
@@ -49,20 +56,20 @@ boolean timer_is_elapsed32 ( uint32 action_time, uint32 *time_readback );
 boolean timer_is_elapsed64 ( uint64 action_time, uint64 *time_readback );
 
 /*
-  uint64 read_timer64()
+  uint64 timer_read64()
 
   Reads out the full 64-bit
   1MHz system timer.
 */
-uint64 read_timer64();
+uint64 timer_read64();
 
 /*
-  uint32 read_timer32()
+  uint32 timer_read32()
   
   Reads out the full 32-bit
   1MHz system timer.
 */
-uint32 read_timer32();
+uint32 timer_read32();
 
 /*
   void timer_deinit()
