@@ -16,10 +16,10 @@ TARGET = cook
 
 all: $(TARGET)
 
-$(TARGET): main.o timer.o debug.o pid.o pwm.o
-	$(CC) $(CFLAGS) main.o timer.o debug.o pid.o pwm.o -lbcm2835 -lrt -o $(TARGET)
+$(TARGET): main.o timer.o debug.o pid.o pwm.o temp.o
+	$(CC) $(CFLAGS) main.o timer.o debug.o pid.o pwm.o temp.o -lbcm2835 -lrt -o $(TARGET)
 
-main.o: main.c types.h timer.h debug.h pid.h pwm.h
+main.o: main.c types.h timer.h debug.h pid.h pwm.h temp.h
 	$(CC) $(CFLAGS) -c main.c
 
 timer.o: timer.c timer.h types.h debug.h
@@ -33,6 +33,10 @@ pid.o: pid.c pid.h types.h debug.h timer.h pwm.h
 
 pwm.o: pwm.c pwm.h types.h debug.h timer.h
 	$(CC) $(CFLAGS) -c pwm.c
+
+temp.o: temp.c temp.h types.h debug.h timer.h
+	$(CC) $(CFLAGS) -c temp.c
+
 
 clean:
 	rm -rf *o $(TARGET)
