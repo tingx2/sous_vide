@@ -44,4 +44,4 @@ int temp_read();
 */
 void temp_deinit();
 
-	
+#endif
