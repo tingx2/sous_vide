@@ -54,12 +54,6 @@
 #define DS1820_FAMILY_CODE_DS18B20      0x28
 #define DS1820_FAMILY_CODE_DS18S20      0x10
 
-// can replace with types.h after integrating
-typedef unsigned char uint8;
-typedef unsigned long long uint64;
-typedef unsigned short uint16;
-
-static uint8 scrpad[9] = {};
 
 // make new gpio.h file, define all used gpios there have all modules include gpio.h
 #define SENSOR_GPIO_PIN					RPI_GPIO_P1_07
@@ -80,9 +74,9 @@ void therm_init()
 {
 	uint32 ret_val = bcm2835_init();
 	if(ret_val==0)
-		DEBUG_MSG_ERROR("therm_init::bcm2835_init() failed.");
+		DEBUG_MSG_ERROR("therm_init:: failed.");
 		
-	DEBUG_MSG_NOTIME(SENSOR_DEBUG_PWM, "therm_init() complete.");
+	DEBUG_MSG_NOTIME(SENSOR_DEBUG_THERM, "therm_init() complete.");
 }
 
 /*
@@ -248,32 +242,31 @@ void therm_byte_out(uint8 val)
 
 /*
 
-	bool therm_capture()
+	bool therm_take_temp()
 	
 	API call to tell sensor to start temperature conversion. A subsequent call should be made 750ms after to read data
 
 */
 
-bool therm_capture()
+bool therm_take_temp()
 {
-
 	therm_handshake();
 	therm_byte_out(DS1820_CMD_SKIPROM);
 	therm_byte_out(DS1820_CMD_CONVERTTEMP);
 	
-	DEBUG_MSG_NOTIME(DEBUG_MODULE_THERM, "therm_capture() complete.");  
+	DEBUG_MSG_NOTIME(DEBUG_MODULE_THERM, "therm convert temp command sent.");  
 }
 
 /*
 
-	bool therm_scrpad_rd()
+	bool therm_scrpad_read()
 	
 	Reads out 9 bytes from the device scratch pad, called after issuing a prior request command
 
 */
 
 
-void therm_scrpad_rd()
+void therm_scrpad_read(uint8* scrpad)
 {
 	therm_handshake();
 	therm_byte_out(DS1820_CMD_SKIPROM);
@@ -298,23 +291,24 @@ void therm_scrpad_rd()
 void therm_read(therm_state_t *therm_state)
 {
 	uint8 crc;
+  uint8 scrpad[9] = {};
 
 	do
 	{
 		therm_state->valid = false;
-		therm_scrpad_rd();
+		therm_scrpad_read(scrpad);
 		
 		crc = crc_calc(scrpad, 8);
 		if (crc == scrpad[8])
 		{
-			DEBUG_MSG_NOTIME(DEBUG_MODULE_THERM, "CRC Correct");
 			therm_state->temp = ((float)((uint16)scrpad[0] + ((uint16)(scrpad[1]&0xf)<<0x8))) * 0.0625; 
 			therm_state->valid = true;
+			DEBUG_MSG_NOTIME(DEBUG_MODULE_THERM, "Temp: %f", therm_state->temp);
 			return;
 		}
 		try++;
 	}while(try < 2);
 		
-	DEBUG_MSG_NOTIME(DEBUG_MODULE_THERM, "CRC incorrect, temp read failed");
+	DEBUG_MSG_NOTIME(DEBUG_MODULE_THERM, "CRC failed, %d != %d", crc, calc);
 	
 }
