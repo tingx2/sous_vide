@@ -67,8 +67,9 @@
 #define DEBUG_MODULE_PID      0x1
 #define DEBUG_MODULE_TIMER    0x2
 #define DEBUG_MODULE_PWM      0x3
-#define DEBUG_MODULE_TEMP     0x4
-#define DEBUG_MODULE_LAST     (DEBUG_MODULE_TEMP)
+#define DEBUG_MODULE_THERM    0x4
+#define DEBUG_MODULE_PUMP     0x5
+#define DEBUG_MODULE_LAST     (DEBUG_MODULE_PUMP)
 
 /**********************************************************************
 

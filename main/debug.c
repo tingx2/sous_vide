@@ -38,7 +38,8 @@ static char debug_module_names[DEBUG_MODULE_LAST+1][8] =
   "PID",
   "TIMER",
   "PWM",
-  "TEMP",
+  "THERM",
+  "PUMP",
 };
 
 /***********************************************************************

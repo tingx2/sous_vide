@@ -12,19 +12,17 @@
 
 **********************************************************************/
 
-#include <bcm2835.h>
 #include "types.h"
 #include "debug.h"
 #include "timer.h"
 #include "pwm.h"
+#include "gpio.h"
 
 /**********************************************************************
 
   Definitions and Variables
 
 **********************************************************************/
-
-#define PWM_GPIO_PIN        RPI_GPIO_P1_11
 
 /* PWM frequency and periods */
 #define PWM_FREQ_HZ         10
@@ -35,6 +33,11 @@
 #define PWM_DELAY_1MS       (TIMER_FREQ_HZ/1000)
 #define PWM_START_DELAY     (100 * PWM_DELAY_1MS)
 
+/* PWM GPIO operations */
+#define PWM_GPIO_SET()  GPIO_SET(GPIO_PWM);
+#define PWM_GPIO_CLR()  GPIO_CLR(GPIO_PWM);
+
+/* PWM pin states */
 typedef enum
 {
   PWM_PIN_LOW = 0,
@@ -83,7 +86,7 @@ void pwm_run()
   {
     pwm_next_action_time += pwm_time_duration_high;
     pwm_pin_state = PWM_PIN_HIGH;
-    bcm2835_gpio_set(PWM_GPIO_PIN);
+    PWM_GPIO_SET();
     return;
   }
 
@@ -91,7 +94,7 @@ void pwm_run()
   {
     pwm_next_action_time += pwm_time_duration_low;
     pwm_pin_state = PWM_PIN_LOW;
-    bcm2835_gpio_clr(PWM_GPIO_PIN);
+    PWM_GPIO_CLR();
     return;
   }
 
@@ -99,13 +102,13 @@ void pwm_run()
   {
     pwm_next_action_time += pwm_time_duration_high;
     pwm_pin_state = PWM_PIN_HIGH;
-    bcm2835_gpio_set(PWM_GPIO_PIN);
+    PWM_GPIO_SET();
   }
   else
   { 
     pwm_next_action_time += pwm_time_duration_low;
     pwm_pin_state = PWM_PIN_LOW;
-    bcm2835_gpio_clr(PWM_GPIO_PIN);
+    PWM_GPIO_CLR();
   }
 
   DEBUG_MSG_HIGH(DEBUG_MODULE_PWM, "Toggle heating pin to %d", (uint32)pwm_pin_state);
@@ -145,7 +148,7 @@ void pwm_set_duty(uint32 duty)
   pwm_time_duration_low  = PWM_TIME_UNIT * (PWM_MAX_DUTY_CYCLE - duty);
   pwm_current_duty       = duty;
 
-  DEBUG_MSG_MID(DEBUG_MODULE_PWM, "Duty cycle update, duty: %d, high_duration: %d, low_duration: %d", 
+  DEBUG_MSG_MID(DEBUG_MODULE_PWM, "Duty cycle update, duty: %d%%, high_duration: %d(ms), low_duration: %d(ms)", 
                 duty, pwm_time_duration_high, pwm_time_duration_low);
 }
 
@@ -156,13 +159,7 @@ void pwm_set_duty(uint32 duty)
 */
 void pwm_init()
 {
-  uint32 ret_val = bcm2835_init();
-  if ( ret_val == 0 )
-  {
-    DEBUG_MSG_ERROR("pwm_init::bcm2835_init() failed.");
-  }
-
-  bcm2835_gpio_fsel(PWM_GPIO_PIN, BCM2835_GPIO_FSEL_OUTP);
+  GPIO_DIRECTION_OUTPUT(GPIO_PWM);
 
   pwm_pin_state           = PWM_PIN_LOW;
   pwm_current_duty        = PWM_MIN_DUTY_CYCLE;
@@ -183,12 +180,6 @@ void pwm_init()
 void pwm_deinit()
 {
   pwm_stop();
-
-  uint32 ret_val = bcm2835_close();
-  if ( ret_val == 0 )
-  {
-    DEBUG_MSG_ERROR("pwm_deinit::bcm2835_close() failed.");
-  }
 
   DEBUG_MSG_NOTIME(DEBUG_MODULE_PWM, "pwm_deinit() complete.");
 }

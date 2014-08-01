@@ -37,7 +37,7 @@
 void pwm_init();
 
 /*
-  void pwm_init()
+  void pwm_deinit()
 
   Cleans up PWM module.
 */
