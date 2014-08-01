@@ -10,6 +10,9 @@
 #include <stdlib.h>
 #include <bcm2835.h>
 
+#include "types.h"
+#include "debug.h"
+#include "therm.h"
 /* -------------------------------------------------------------------------- */
 /*                         DS1820 Timing Parameters                           */
 /* -------------------------------------------------------------------------- */
@@ -54,22 +57,15 @@
 #define DS1820_FAMILY_CODE_DS18B20      0x28
 #define DS1820_FAMILY_CODE_DS18S20      0x10
 
-// can replace with types.h after integrating
-typedef unsigned char uint8;
-typedef unsigned long long uint64;
-typedef unsigned short uint16;
-
 static uint8 scrpad[9] = {};
 
 // make new gpio.h file, define all used gpios there have all modules include gpio.h
 #define SENSOR_GPIO_PIN					RPI_GPIO_P1_07
 
-// change to THERM_DELAY_IN_US macro
-void therm_delay_us(int usec)
-{
-	for(int i=0; i<usec*100; i++);
-}
-
+#define THERM_DELAY_US(usec)                                                              \
+  do {                                                                                                          \
+                        for(int ii=0;ii<(100*usec); ii++); \
+        }while(0)
 /*
 	therm_init()
 	
@@ -78,11 +74,7 @@ void therm_delay_us(int usec)
 
 void therm_init()
 {
-	uint32 ret_val = bcm2835_init();
-	if(ret_val==0)
-		DEBUG_MSG_ERROR("therm_init::bcm2835_init() failed.");
-		
-	DEBUG_MSG_NOTIME(SENSOR_DEBUG_PWM, "therm_init() complete.");
+	DEBUG_MSG_NOTIME(DEBUG_MODULE_THERM, "therm_init() complete.");
 }
 
 /*
@@ -133,50 +125,50 @@ uint8 crc_calc(uint8 *p, int length)
 
 /*
 	
-	bool therm_handshake()
+	boolean therm_handshake()
 	
 	Resets sensor flow to start state, done everytime before a new command is issued
 
 */
 
 
-bool therm_handshake()
+boolean therm_handshake()
 {
-	bool handshake;  
+	boolean handshake;  
 
   bcm2835_gpio_fsel(SENSOR_GPIO_PIN, BCM2835_GPIO_FSEL_OUTP);
 
  	bcm2835_gpio_clr(SENSOR_GPIO_PIN);	
-	therm_delay_us(DS1820_PRESENCE_FIN);
+	THERM_DELAY_US(DS1820_PRESENCE_FIN);
   
 	bcm2835_gpio_set(SENSOR_GPIO_PIN);
-	therm_delay_us(DS1820_PRESENCE_WAIT);
+	THERM_DELAY_US(DS1820_PRESENCE_WAIT);
   
   bcm2835_gpio_fsel(SENSOR_GPIO_PIN, BCM2835_GPIO_FSEL_INPT);
 	handshake = bcm2835_gpio_lev(SENSOR_GPIO_PIN);
 	
-	therm_delay_us(DS1820_PRESENCE_FIN);
+	THERM_DELAY_US(DS1820_PRESENCE_FIN);
 
   return handshake;
 }
 
 /*
 
-	bool therm_bit_in(void)
+	boolean therm_bit_in(void)
 	
 	Creates a read window for sensor and read back 1 bit
 
 */
 
 
-bool therm_bit_in(void)
+boolean therm_bit_in(void)
 {
-	bool bit;
+	boolean bit;
   bcm2835_gpio_fsel(SENSOR_GPIO_PIN, BCM2835_GPIO_FSEL_OUTP);
   bcm2835_gpio_clr(SENSOR_GPIO_PIN);
-	therm_delay_us(1);
+	THERM_DELAY_US(1);
   bcm2835_gpio_fsel(SENSOR_GPIO_PIN, BCM2835_GPIO_FSEL_INPT);
-	therm_delay_us(1);
+	THERM_DELAY_US(1);
   bit = bcm2835_gpio_lev(SENSOR_GPIO_PIN);
 	
   return bit;
@@ -184,7 +176,7 @@ bool therm_bit_in(void)
 
 /*
 
-	bool therm_byte_in(void)
+	boolean therm_byte_in(void)
 
 	Compiles return values from therm_bit_in into a byte	
 
@@ -202,28 +194,28 @@ uint8 therm_byte_in(void)
 		{
 			value |= (1 << i);
 		}
-		therm_delay_us(80);
+		THERM_DELAY_US(80);
 	}
 	return value;
 }
 
 /*
 
-	bool therm_bit_out(bool_bit)
+	boolean therm_bit_out(boolean_bit)
 
 	Creates write window and sends a bit	
 
 */
 
-void therm_bit_out(bool bit)
+void therm_bit_out(boolean bit)
 {
   bcm2835_gpio_clr(SENSOR_GPIO_PIN);
-  therm_delay_us(1);
+  THERM_DELAY_US(1);
 	if(bit)
 	{
   	bcm2835_gpio_set(SENSOR_GPIO_PIN);
 	}
-	therm_delay_us(80);
+	THERM_DELAY_US(80);
   bcm2835_gpio_set(SENSOR_GPIO_PIN);
 }
 
@@ -236,25 +228,24 @@ void therm_bit_out(bool bit)
 void therm_byte_out(uint8 val)
 {
 	uint8 i;
-	uint8 temp;
 	
-	therm_delay_us(100);
+	THERM_DELAY_US(100);
 	for(i=0; i<8; i++)
 	{
     therm_bit_out((val >> i) & 0x1);
-		therm_delay_us(1);
+		THERM_DELAY_US(1);
 	}
 }
 
 /*
 
-	bool therm_capture()
+	boolean therm_capture()
 	
 	API call to tell sensor to start temperature conversion. A subsequent call should be made 750ms after to read data
 
 */
 
-bool therm_capture()
+void therm_capture()
 {
 
 	therm_handshake();
@@ -266,7 +257,7 @@ bool therm_capture()
 
 /*
 
-	bool therm_scrpad_rd()
+	boolean therm_scrpad_rd()
 	
 	Reads out 9 bytes from the device scratch pad, called after issuing a prior request command
 
@@ -279,7 +270,7 @@ void therm_scrpad_rd()
 	therm_byte_out(DS1820_CMD_SKIPROM);
 	therm_byte_out(DS1820_CMD_READSCRPAD);
 
-	therm_delay_us(1);
+	THERM_DELAY_US(1);
 
 	for(int i=0; i<9; i++)
 	{
@@ -298,6 +289,7 @@ void therm_scrpad_rd()
 void therm_read(therm_state_t *therm_state)
 {
 	uint8 crc;
+	uint8 try=0;
 
 	do
 	{

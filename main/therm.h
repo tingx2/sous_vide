@@ -1,3 +1,6 @@
+#ifndef THERM_H
+#define THERM_H
+
 /*
 	therm.h
 
@@ -27,6 +30,7 @@ typedef struct
 } therm_state_t;
 
 
-void temp_init();
-int temp_read();
+void therm_init();
+void therm_read(therm_state_t *therm_state);
 	
+#endif // THERM_H

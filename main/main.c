@@ -15,11 +15,12 @@
 #include "types.h"
 #include "debug.h"
 #include "timer.h"
+#include "therm.h"
 #include "pid.h"
 #include "pwm.h"
 #include "pump.h"
 
-// XXX temp for debug
+// XXX therm for debug
 static uint32 loop_count = 0;
 
 /*********************************************************************
@@ -43,6 +44,7 @@ int main()
 
   pwm_init();
   pump_init();
+  therm_init();
 
   pump_start();
   pwm_set_duty(25);
@@ -69,7 +71,6 @@ int main()
   {
     DEBUG_MSG_ERROR("bcm2835_close() failed.");
   }
-
   timer_deinit();
   debug_deinit();   /* This should be last. */
 
