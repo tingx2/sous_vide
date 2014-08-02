@@ -14,10 +14,13 @@ CFLAGS = -Wall -std=c99
 # Target executable
 TARGET = cook
 
+# Map file
+MAP = cook.map
+
 all: $(TARGET)
 
 $(TARGET): main.o timer.o debug.o pid.o pwm.o pump.o therm.o
-	$(CC) $(CFLAGS) main.o timer.o debug.o pid.o pwm.o pump.o therm.o -lbcm2835 -lrt -o $(TARGET)
+	$(CC) $(CFLAGS) main.o timer.o debug.o pid.o pwm.o pump.o therm.o -lbcm2835 -lrt -Wl,-Map=$(MAP) -o$(TARGET)
 
 main.o: main.c types.h timer.h debug.h pid.h pwm.h
 	$(CC) $(CFLAGS) -c main.c
@@ -41,4 +44,4 @@ therm.o: therm.c therm.h types.h debug.h timer.h gpio.h
 	$(CC) $(CFLAGS) -c therm.c
 
 clean:
-	rm -rf *o $(TARGET)
+	rm -rf *o $(TARGET) $(MAP)
