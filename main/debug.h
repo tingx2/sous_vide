@@ -22,7 +22,7 @@
 **********************************************************************/
 
 /* Set the debug options using these flag */
-#define DEBUG_CURRENT_VERBOSITY   DEBUG_VERBOSE_HIGH
+#define DEBUG_CURRENT_VERBOSITY   DEBUG_VERBOSE_MED
 #define DEBUG_CURRENT_OUTPUT      DEBUG_OUTPUT_STDIO
 
 /* Selects either file or terminal as the output location
@@ -33,7 +33,7 @@
 /* Sets the level of debug messages */
 #define DEBUG_VERBOSE_NONE      0
 #define DEBUG_VERBOSE_LOW       1
-#define DEBUG_VERBOSE_MID       2
+#define DEBUG_VERBOSE_MED       2
 #define DEBUG_VERBOSE_HIGH      3
 
 /* Debug message macros */
@@ -44,11 +44,11 @@
   #define DEBUG_MSG_LOW(module, ...)
 #endif
 
-#if (DEBUG_CURRENT_VERBOSITY >= DEBUG_VERBOSE_MID)
-  #define DEBUG_MSG_MID(module, ...)    \
+#if (DEBUG_CURRENT_VERBOSITY >= DEBUG_VERBOSE_MED)
+  #define DEBUG_MSG_MED(module, ...)    \
     debug_printf(module, __VA_ARGS__)
 #else              
-  #define DEBUG_MSG_MID(module, ...)
+  #define DEBUG_MSG_MED(module, ...)
 #endif
 
 #if (DEBUG_CURRENT_VERBOSITY >= DEBUG_VERBOSE_HIGH)

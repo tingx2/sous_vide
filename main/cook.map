@@ -1,0 +1,709 @@
+Archive member included because of file (symbol)
+
+/usr/local/lib/libbcm2835.a(bcm2835.o)
+                              pwm.o (bcm2835_gpio_fsel)
+/usr/lib/gcc/arm-linux-gnueabihf/4.6/libgcc.a(_udivsi3.o)
+                              /usr/local/lib/libbcm2835.a(bcm2835.o) (__aeabi_uidiv)
+/usr/lib/gcc/arm-linux-gnueabihf/4.6/libgcc.a(_dvmd_lnx.o)
+                              /usr/lib/gcc/arm-linux-gnueabihf/4.6/libgcc.a(_udivsi3.o) (__aeabi_idiv0)
+/usr/lib/arm-linux-gnueabihf/libc_nonshared.a(elf-init.oS)
+                              /usr/lib/gcc/arm-linux-gnueabihf/4.6/../../../arm-linux-gnueabihf/crt1.o (__libc_csu_init)
+
+Allocating common symbols
+Common symbol       size              file
+
+pid_params          0x24              pid.o
+
+Discarded input sections
+
+ .note.GNU-stack
+                0x00000000        0x0 /usr/lib/gcc/arm-linux-gnueabihf/4.6/../../../arm-linux-gnueabihf/crt1.o
+ .gnu_debuglink
+                0x00000000        0xc /usr/lib/gcc/arm-linux-gnueabihf/4.6/../../../arm-linux-gnueabihf/crt1.o
+ .note.GNU-stack
+                0x00000000        0x0 /usr/lib/gcc/arm-linux-gnueabihf/4.6/../../../arm-linux-gnueabihf/crti.o
+ .gnu_debuglink
+                0x00000000        0xc /usr/lib/gcc/arm-linux-gnueabihf/4.6/../../../arm-linux-gnueabihf/crti.o
+ .note.GNU-stack
+                0x00000000        0x0 /usr/lib/gcc/arm-linux-gnueabihf/4.6/crtbegin.o
+ .note.GNU-stack
+                0x00000000        0x0 main.o
+ .note.GNU-stack
+                0x00000000        0x0 timer.o
+ .note.GNU-stack
+                0x00000000        0x0 debug.o
+ .note.GNU-stack
+                0x00000000        0x0 pid.o
+ .note.GNU-stack
+                0x00000000        0x0 pwm.o
+ .note.GNU-stack
+                0x00000000        0x0 pump.o
+ .note.GNU-stack
+                0x00000000        0x0 therm.o
+ .note.GNU-stack
+                0x00000000        0x0 /usr/local/lib/libbcm2835.a(bcm2835.o)
+ .note.GNU-stack
+                0x00000000        0x0 /usr/lib/gcc/arm-linux-gnueabihf/4.6/libgcc.a(_udivsi3.o)
+ .note.GNU-stack
+                0x00000000        0x0 /usr/lib/gcc/arm-linux-gnueabihf/4.6/libgcc.a(_dvmd_lnx.o)
+ .note.GNU-stack
+                0x00000000        0x0 /usr/lib/arm-linux-gnueabihf/libc_nonshared.a(elf-init.oS)
+ .note.GNU-stack
+                0x00000000        0x0 /usr/lib/gcc/arm-linux-gnueabihf/4.6/crtend.o
+ .note.GNU-stack
+                0x00000000        0x0 /usr/lib/gcc/arm-linux-gnueabihf/4.6/../../../arm-linux-gnueabihf/crtn.o
+ .gnu_debuglink
+                0x00000000        0xc /usr/lib/gcc/arm-linux-gnueabihf/4.6/../../../arm-linux-gnueabihf/crtn.o
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+*default*        0x00000000         0xffffffff
+
+Linker script and memory map
+
+LOAD /usr/lib/gcc/arm-linux-gnueabihf/4.6/../../../arm-linux-gnueabihf/crt1.o
+LOAD /usr/lib/gcc/arm-linux-gnueabihf/4.6/../../../arm-linux-gnueabihf/crti.o
+LOAD /usr/lib/gcc/arm-linux-gnueabihf/4.6/crtbegin.o
+LOAD main.o
+LOAD timer.o
+LOAD debug.o
+LOAD pid.o
+LOAD pwm.o
+LOAD pump.o
+LOAD therm.o
+LOAD /usr/local/lib/libbcm2835.a
+LOAD /usr/lib/gcc/arm-linux-gnueabihf/4.6/../../../arm-linux-gnueabihf/librt.so
+LOAD /usr/lib/gcc/arm-linux-gnueabihf/4.6/libgcc.a
+LOAD /usr/lib/gcc/arm-linux-gnueabihf/4.6/libgcc_s.so
+START GROUP
+LOAD /usr/lib/gcc/arm-linux-gnueabihf/4.6/libgcc_s.so.1
+LOAD /usr/lib/gcc/arm-linux-gnueabihf/4.6/libgcc.a
+END GROUP
+LOAD /usr/lib/gcc/arm-linux-gnueabihf/4.6/../../../arm-linux-gnueabihf/libc.so
+START GROUP
+LOAD /lib/arm-linux-gnueabihf/libc.so.6
+LOAD /usr/lib/arm-linux-gnueabihf/libc_nonshared.a
+LOAD /lib/arm-linux-gnueabihf/ld-linux-armhf.so.3
+END GROUP
+LOAD /usr/lib/gcc/arm-linux-gnueabihf/4.6/libgcc.a
+LOAD /usr/lib/gcc/arm-linux-gnueabihf/4.6/libgcc_s.so
+START GROUP
+LOAD /usr/lib/gcc/arm-linux-gnueabihf/4.6/libgcc_s.so.1
+LOAD /usr/lib/gcc/arm-linux-gnueabihf/4.6/libgcc.a
+END GROUP
+LOAD /usr/lib/gcc/arm-linux-gnueabihf/4.6/crtend.o
+LOAD /usr/lib/gcc/arm-linux-gnueabihf/4.6/../../../arm-linux-gnueabihf/crtn.o
+                0x00008000                PROVIDE (__executable_start, 0x8000)
+                0x00008134                . = (0x8000 + SIZEOF_HEADERS)
+
+.interp         0x00008134       0x19
+ *(.interp)
+ .interp        0x00008134       0x19 /usr/lib/gcc/arm-linux-gnueabihf/4.6/../../../arm-linux-gnueabihf/crt1.o
+
+.note.ABI-tag   0x00008150       0x20
+ .note.ABI-tag  0x00008150       0x20 /usr/lib/gcc/arm-linux-gnueabihf/4.6/../../../arm-linux-gnueabihf/crt1.o
+
+.note.gnu.build-id
+                0x00008170       0x24
+ *(.note.gnu.build-id)
+ .note.gnu.build-id
+                0x00008170       0x24 linker stubs
+
+.hash           0x00008194       0x9c
+ *(.hash)
+ .hash          0x00008194       0x9c /usr/lib/gcc/arm-linux-gnueabihf/4.6/../../../arm-linux-gnueabihf/crt1.o
+
+.gnu.hash       0x00008230       0xa8
+ *(.gnu.hash)
+ .gnu.hash      0x00008230       0xa8 /usr/lib/gcc/arm-linux-gnueabihf/4.6/../../../arm-linux-gnueabihf/crt1.o
+
+.dynsym         0x000082d8      0x140
+ *(.dynsym)
+ .dynsym        0x000082d8      0x140 /usr/lib/gcc/arm-linux-gnueabihf/4.6/../../../arm-linux-gnueabihf/crt1.o
+
+.dynstr         0x00008418       0xcb
+ *(.dynstr)
+ .dynstr        0x00008418       0xcb /usr/lib/gcc/arm-linux-gnueabihf/4.6/../../../arm-linux-gnueabihf/crt1.o
+
+.gnu.version    0x000084e4       0x28
+ *(.gnu.version)
+ .gnu.version   0x000084e4       0x28 /usr/lib/gcc/arm-linux-gnueabihf/4.6/../../../arm-linux-gnueabihf/crt1.o
+
+.gnu.version_d  0x0000850c        0x0
+ *(.gnu.version_d)
+ .gnu.version_d
+                0x00000000        0x0 /usr/lib/gcc/arm-linux-gnueabihf/4.6/../../../arm-linux-gnueabihf/crt1.o
+
+.gnu.version_r  0x0000850c       0x20
+ *(.gnu.version_r)
+ .gnu.version_r
+                0x0000850c       0x20 /usr/lib/gcc/arm-linux-gnueabihf/4.6/../../../arm-linux-gnueabihf/crt1.o
+
+.rel.dyn        0x0000852c       0x10
+ *(.rel.init)
+ *(.rel.text .rel.text.* .rel.gnu.linkonce.t.*)
+ *(.rel.fini)
+ *(.rel.rodata .rel.rodata.* .rel.gnu.linkonce.r.*)
+ *(.rel.data.rel.ro* .rel.gnu.linkonce.d.rel.ro.*)
+ *(.rel.data .rel.data.* .rel.gnu.linkonce.d.*)
+ *(.rel.tdata .rel.tdata.* .rel.gnu.linkonce.td.*)
+ *(.rel.tbss .rel.tbss.* .rel.gnu.linkonce.tb.*)
+ *(.rel.ctors)
+ *(.rel.dtors)
+ *(.rel.got)
+ .rel.got       0x0000852c        0x8 /usr/lib/gcc/arm-linux-gnueabihf/4.6/../../../arm-linux-gnueabihf/crt1.o
+ *(.rel.bss .rel.bss.* .rel.gnu.linkonce.b.*)
+ .rel.bss       0x00008534        0x8 /usr/lib/gcc/arm-linux-gnueabihf/4.6/../../../arm-linux-gnueabihf/crt1.o
+                0x0000853c                PROVIDE (__rel_iplt_start, .)
+ *(.rel.iplt)
+ .rel.iplt      0x00000000        0x0 /usr/lib/gcc/arm-linux-gnueabihf/4.6/../../../arm-linux-gnueabihf/crt1.o
+                0x0000853c                PROVIDE (__rel_iplt_end, .)
+                0x0000853c                PROVIDE (__rela_iplt_start, .)
+                0x0000853c                PROVIDE (__rela_iplt_end, .)
+
+.rela.dyn       0x0000853c        0x0
+ *(.rela.init)
+ *(.rela.text .rela.text.* .rela.gnu.linkonce.t.*)
+ *(.rela.fini)
+ *(.rela.rodata .rela.rodata.* .rela.gnu.linkonce.r.*)
+ *(.rela.data .rela.data.* .rela.gnu.linkonce.d.*)
+ *(.rela.tdata .rela.tdata.* .rela.gnu.linkonce.td.*)
+ *(.rela.tbss .rela.tbss.* .rela.gnu.linkonce.tb.*)
+ *(.rela.ctors)
+ *(.rela.dtors)
+ *(.rela.got)
+ *(.rela.bss .rela.bss.* .rela.gnu.linkonce.b.*)
+                0x0000853c                PROVIDE (__rel_iplt_start, .)
+                0x0000853c                PROVIDE (__rel_iplt_end, .)
+                0x0000853c                PROVIDE (__rela_iplt_start, .)
+ *(.rela.iplt)
+                0x0000853c                PROVIDE (__rela_iplt_end, .)
+
+.rel.plt        0x0000853c       0x88
+ *(.rel.plt)
+ .rel.plt       0x0000853c       0x88 /usr/lib/gcc/arm-linux-gnueabihf/4.6/../../../arm-linux-gnueabihf/crt1.o
+
+.rela.plt
+ *(.rela.plt)
+
+.init           0x000085c4        0xc
+ *(.init)
+ .init          0x000085c4        0x8 /usr/lib/gcc/arm-linux-gnueabihf/4.6/../../../arm-linux-gnueabihf/crti.o
+                0x000085c4                _init
+ .init          0x000085cc        0x4 /usr/lib/gcc/arm-linux-gnueabihf/4.6/../../../arm-linux-gnueabihf/crtn.o
+
+.plt            0x000085d0       0xe0
+ *(.plt)
+ .plt           0x000085d0       0xe0 /usr/lib/gcc/arm-linux-gnueabihf/4.6/../../../arm-linux-gnueabihf/crt1.o
+                0x000085e4                raise@@GLIBC_2.4
+                0x000085f0                printf@@GLIBC_2.4
+                0x000085fc                nanosleep@@GLIBC_2.4
+                0x00008608                __libc_start_main@@GLIBC_2.4
+                0x00008614                strerror@@GLIBC_2.4
+                0x0000862c                open@@GLIBC_2.4
+                0x00008638                vprintf@@GLIBC_2.4
+                0x00008644                mmap@@GLIBC_2.4
+                0x00008650                fprintf@@GLIBC_2.4
+                0x0000865c                posix_memalign@@GLIBC_2.4
+                0x00008668                __errno_location@@GLIBC_2.4
+                0x00008674                putchar@@GLIBC_2.4
+                0x00008680                munmap@@GLIBC_2.4
+                0x0000868c                vfprintf@@GLIBC_2.4
+                0x00008698                abort@@GLIBC_2.4
+                0x000086a4                close@@GLIBC_2.4
+
+.iplt           0x000086b0        0x0
+ *(.iplt)
+ .iplt          0x00000000        0x0 /usr/lib/gcc/arm-linux-gnueabihf/4.6/../../../arm-linux-gnueabihf/crt1.o
+
+.text           0x000086b0     0x26f8
+ *(.text.unlikely .text.*_unlikely)
+ *(.text.exit .text.exit.*)
+ *(.text.startup .text.startup.*)
+ *(.text.hot .text.hot.*)
+ *(.text .stub .text.* .gnu.linkonce.t.*)
+ .text          0x000086b0       0x3c /usr/lib/gcc/arm-linux-gnueabihf/4.6/../../../arm-linux-gnueabihf/crt1.o
+                0x000086b0                _start
+ .text          0x000086ec       0x24 /usr/lib/gcc/arm-linux-gnueabihf/4.6/../../../arm-linux-gnueabihf/crti.o
+ .text          0x00008710       0x4c /usr/lib/gcc/arm-linux-gnueabihf/4.6/crtbegin.o
+ .text          0x0000875c       0xe0 main.o
+                0x0000875c                main
+ *fill*         0x0000883c        0x4 00000000
+ .text          0x00008840      0x300 timer.o
+                0x00008840                timer_is_elapsed32
+                0x0000889c                timer_is_elapsed64
+                0x00008910                timer_read64
+                0x000089a0                timer_read32
+                0x000089c8                timer_init
+                0x00008ab4                timer_deinit
+ .text          0x00008b40      0x15c debug.o
+                0x00008b40                debug_printf
+                0x00008bb4                debug_printf_notime
+                0x00008c20                debug_err_printf
+                0x00008c64                debug_init
+                0x00008c80                debug_deinit
+ .text          0x00008c9c      0x220 pid.o
+                0x00008c9c                pid_get_gain
+                0x00008cbc                pid_get_error
+                0x00008cdc                pid_get_temp_setpoint
+                0x00008d04                pid_get_temp_current
+                0x00008d2c                pid_get_pid_output_raw
+                0x00008d54                pid_update_temp_current
+                0x00008d80                pid_update_temp_setpoint
+                0x00008dac                pid_update_output_raw
+                0x00008dd8                pid_loop
+ .text          0x00008ebc      0x308 pwm.o
+                0x00008ebc                pwm_run
+                0x00009048                pwm_stop
+                0x0000906c                pwm_start
+                0x00009090                pwm_set_duty
+                0x0000911c                pwm_init
+                0x000091a4                pwm_deinit
+ .text          0x000091c4       0x90 pump.o
+                0x000091c4                pump_stop
+                0x000091e8                pump_start
+                0x0000920c                pump_init
+                0x00009234                pump_deinit
+ .text          0x00009254      0x620 therm.o
+                0x00009254                therm_init
+                0x00009270                crc8
+                0x00009310                crc_calc
+                0x00009394                therm_handshake
+                0x00009468                therm_bit_in
+                0x000094fc                therm_byte_in
+                0x000095a0                therm_bit_out
+                0x0000962c                therm_byte_out
+                0x000096d4                therm_capture
+                0x00009704                therm_scrpad_rd
+                0x00009794                therm_read
+ .text          0x00009874     0x12b4 /usr/local/lib/libbcm2835.a(bcm2835.o)
+                0x0000990c                bcm2835_set_debug
+                0x0000991c                bcm2835_peri_read
+                0x00009958                bcm2835_peri_read_nb
+                0x00009990                bcm2835_peri_write
+                0x000099c4                bcm2835_peri_write_nb
+                0x000099f4                bcm2835_peri_set_bits
+                0x00009a20                bcm2835_gpio_fsel
+                0x00009a60                bcm2835_gpio_set
+                0x00009a88                bcm2835_gpio_clr
+                0x00009ab0                bcm2835_gpio_set_multi
+                0x00009ac8                bcm2835_gpio_clr_multi
+                0x00009ae0                bcm2835_gpio_lev
+                0x00009b1c                bcm2835_gpio_eds
+                0x00009b58                bcm2835_gpio_set_eds
+                0x00009b80                bcm2835_gpio_ren
+                0x00009bac                bcm2835_gpio_clr_ren
+                0x00009bd8                bcm2835_gpio_fen
+                0x00009c04                bcm2835_gpio_clr_fen
+                0x00009c30                bcm2835_gpio_hen
+                0x00009c5c                bcm2835_gpio_clr_hen
+                0x00009c88                bcm2835_gpio_len
+                0x00009cb4                bcm2835_gpio_clr_len
+                0x00009ce0                bcm2835_gpio_aren
+                0x00009d0c                bcm2835_gpio_clr_aren
+                0x00009d38                bcm2835_gpio_afen
+                0x00009d64                bcm2835_gpio_clr_afen
+                0x00009d90                bcm2835_gpio_pud
+                0x00009da8                bcm2835_gpio_pudclk
+                0x00009dd4                bcm2835_gpio_pad
+                0x00009df0                bcm2835_gpio_set_pad
+                0x00009e0c                bcm2835_delay
+                0x00009e5c                bcm2835_gpio_write
+                0x00009e6c                bcm2835_gpio_write_multi
+                0x00009e7c                bcm2835_gpio_write_mask
+                0x00009e9c                bcm2835_spi_begin
+                0x00009f04                bcm2835_spi_end
+                0x00009f48                bcm2835_spi_setBitOrder
+                0x00009f4c                bcm2835_spi_setClockDivider
+                0x00009f64                bcm2835_spi_setDataMode
+                0x00009f7c                bcm2835_spi_writenb
+                0x0000a010                bcm2835_spi_chipSelect
+                0x0000a028                bcm2835_spi_setChipSelectPolarity
+                0x0000a04c                bcm2835_i2c_begin
+                0x0000a0c4                bcm2835_i2c_end
+                0x0000a0e4                bcm2835_i2c_setSlaveAddress
+                0x0000a0fc                bcm2835_i2c_setClockDivider
+                0x0000a15c                bcm2835_i2c_set_baudrate
+                0x0000a184                bcm2835_i2c_write
+                0x0000a2b8                bcm2835_i2c_read
+                0x0000a3e8                bcm2835_st_read
+                0x0000a428                bcm2835_st_delay
+                0x0000a448                bcm2835_delayMicroseconds
+                0x0000a4c0                bcm2835_i2c_read_register_rs
+                0x0000a67c                bcm2835_spi_transfernb
+                0x0000a774                bcm2835_spi_transfern
+                0x0000a780                bcm2835_spi_transfer
+                0x0000a828                bcm2835_gpio_set_pud
+                0x0000a874                malloc_aligned
+                0x0000a8b0                bcm2835_close
+                0x0000a924                bcm2835_init
+ .text          0x0000ab28      0x20c /usr/lib/gcc/arm-linux-gnueabihf/4.6/libgcc.a(_udivsi3.o)
+                0x0000ab28                __aeabi_uidiv
+                0x0000ab28                __udivsi3
+                0x0000ad14                __aeabi_uidivmod
+ .text          0x0000ad34       0x10 /usr/lib/gcc/arm-linux-gnueabihf/4.6/libgcc.a(_dvmd_lnx.o)
+                0x0000ad34                __aeabi_ldiv0
+                0x0000ad34                __aeabi_idiv0
+ .text          0x0000ad44       0x64 /usr/lib/arm-linux-gnueabihf/libc_nonshared.a(elf-init.oS)
+                0x0000ad44                __libc_csu_init
+                0x0000ada4                __libc_csu_fini
+ .text          0x0000ada8        0x0 /usr/lib/gcc/arm-linux-gnueabihf/4.6/crtend.o
+ .text          0x0000ada8        0x0 /usr/lib/gcc/arm-linux-gnueabihf/4.6/../../../arm-linux-gnueabihf/crtn.o
+ *(.gnu.warning)
+ *(.glue_7t)
+ .glue_7t       0x00000000        0x0 linker stubs
+ *(.glue_7)
+ .glue_7        0x00000000        0x0 linker stubs
+ *(.vfp11_veneer)
+ .vfp11_veneer  0x00000000        0x0 linker stubs
+ *(.v4_bx)
+ .v4_bx         0x00000000        0x0 linker stubs
+
+.fini           0x0000ada8        0x8
+ *(.fini)
+ .fini          0x0000ada8        0x4 /usr/lib/gcc/arm-linux-gnueabihf/4.6/../../../arm-linux-gnueabihf/crti.o
+                0x0000ada8                _fini
+ .fini          0x0000adac        0x4 /usr/lib/gcc/arm-linux-gnueabihf/4.6/../../../arm-linux-gnueabihf/crtn.o
+                0x0000adb0                PROVIDE (__etext, .)
+                0x0000adb0                PROVIDE (_etext, .)
+                0x0000adb0                PROVIDE (etext, .)
+
+.rodata         0x0000adb0      0x3c0
+ *(.rodata .rodata.* .gnu.linkonce.r.*)
+ .rodata.cst4   0x0000adb0        0x4 /usr/lib/gcc/arm-linux-gnueabihf/4.6/../../../arm-linux-gnueabihf/crt1.o
+                0x0000adb0                _IO_stdin_used
+ .rodata        0x0000adb4       0x30 main.o
+ .rodata        0x0000ade4       0xb8 timer.o
+ .rodata        0x0000ae9c       0x54 debug.o
+ .rodata        0x0000aef0       0x98 pwm.o
+ .rodata        0x0000af88       0x58 pump.o
+ .rodata        0x0000afe0       0x60 therm.o
+ .rodata.str1.4
+                0x0000b040      0x130 /usr/local/lib/libbcm2835.a(bcm2835.o)
+
+.rodata1
+ *(.rodata1)
+
+.ARM.extab      0x0000b170        0x0
+ *(.ARM.extab* .gnu.linkonce.armextab.*)
+ .ARM.extab     0x0000b170        0x0 /usr/lib/gcc/arm-linux-gnueabihf/4.6/../../../arm-linux-gnueabihf/crt1.o
+                0x0000b170                PROVIDE (__exidx_start, .)
+
+.ARM.exidx      0x0000b170        0x8
+ *(.ARM.exidx* .gnu.linkonce.armexidx.*)
+ .ARM.exidx     0x0000b170        0x8 /usr/lib/gcc/arm-linux-gnueabihf/4.6/../../../arm-linux-gnueabihf/crt1.o
+                0x0000b178                PROVIDE (__exidx_end, .)
+
+.eh_frame_hdr   0x0000b178        0x0
+ *(.eh_frame_hdr)
+ .eh_frame_hdr  0x00000000        0x0 /usr/lib/gcc/arm-linux-gnueabihf/4.6/../../../arm-linux-gnueabihf/crtn.o
+
+.eh_frame       0x0000b178        0x4
+ *(.eh_frame)
+ .eh_frame      0x0000b178        0x4 /usr/lib/gcc/arm-linux-gnueabihf/4.6/crtend.o
+
+.gcc_except_table
+ *(.gcc_except_table .gcc_except_table.*)
+
+.exception_ranges
+ *(.exception_ranges .exception_ranges*)
+                0x0000b17c                . = (ALIGN (0x8000) - ((0x8000 - .) & 0x7fff))
+                0x0001317c                . = DATA_SEGMENT_ALIGN (0x8000, 0x1000)
+
+.eh_frame
+ *(.eh_frame)
+
+.gcc_except_table
+ *(.gcc_except_table .gcc_except_table.*)
+
+.exception_ranges
+ *(.exception_ranges .exception_ranges*)
+
+.tdata
+ *(.tdata .tdata.* .gnu.linkonce.td.*)
+
+.tbss
+ *(.tbss .tbss.* .gnu.linkonce.tb.*)
+ *(.tcommon)
+
+.preinit_array  0x0001317c        0x0
+                0x0001317c                PROVIDE (__preinit_array_start, .)
+ *(.preinit_array)
+                0x0001317c                PROVIDE (__preinit_array_end, .)
+
+.init_array     0x0001317c        0x4
+                0x0001317c                PROVIDE (__init_array_start, .)
+ *(SORT(.init_array.*) SORT(.ctors.*))
+ *(.init_array)
+ .init_array    0x0001317c        0x4 /usr/lib/gcc/arm-linux-gnueabihf/4.6/crtbegin.o
+ *(EXCLUDE_FILE(*crtend?.o *crtend.o *crtbegin?.o *crtbegin.o) .ctors)
+                0x00013180                PROVIDE (__init_array_end, .)
+
+.fini_array     0x00013180        0x4
+                0x00013180                PROVIDE (__fini_array_start, .)
+ *(SORT(.fini_array.*) SORT(.dtors.*))
+ *(.fini_array)
+ .fini_array    0x00013180        0x4 /usr/lib/gcc/arm-linux-gnueabihf/4.6/crtbegin.o
+ *(EXCLUDE_FILE(*crtend?.o *crtend.o *crtbegin?.o *crtbegin.o) .dtors)
+                0x00013184                PROVIDE (__fini_array_end, .)
+
+.ctors
+ *crtbegin.o(.ctors)
+ *crtbegin?.o(.ctors)
+ *(EXCLUDE_FILE(*crtend?.o *crtend.o) .ctors)
+ *(SORT(.ctors.*))
+ *(.ctors)
+
+.dtors
+ *crtbegin.o(.dtors)
+ *crtbegin?.o(.dtors)
+ *(EXCLUDE_FILE(*crtend?.o *crtend.o) .dtors)
+ *(SORT(.dtors.*))
+ *(.dtors)
+
+.jcr            0x00013184        0x4
+ *(.jcr)
+ .jcr           0x00013184        0x0 /usr/lib/gcc/arm-linux-gnueabihf/4.6/crtbegin.o
+ .jcr           0x00013184        0x4 /usr/lib/gcc/arm-linux-gnueabihf/4.6/crtend.o
+
+.data.rel.ro
+ *(.data.rel.ro.local* .gnu.linkonce.d.rel.ro.local.*)
+ *(.data.rel.ro* .gnu.linkonce.d.rel.ro.*)
+
+.dynamic        0x00013188       0xf8
+ *(.dynamic)
+ .dynamic       0x00013188       0xf8 /usr/lib/gcc/arm-linux-gnueabihf/4.6/../../../arm-linux-gnueabihf/crt1.o
+                0x00013188                _DYNAMIC
+                0x00013280                . = DATA_SEGMENT_RELRO_END (., 0x0)
+
+.got            0x00013280       0x54
+ *(.got.plt)
+ .got.plt       0x00013280       0x50 /usr/lib/gcc/arm-linux-gnueabihf/4.6/../../../arm-linux-gnueabihf/crt1.o
+                0x00013280                _GLOBAL_OFFSET_TABLE_
+ *(.igot.plt)
+ .igot.plt      0x00000000        0x0 /usr/lib/gcc/arm-linux-gnueabihf/4.6/../../../arm-linux-gnueabihf/crt1.o
+ *(.got)
+ .got           0x000132d0        0x4 /usr/lib/gcc/arm-linux-gnueabihf/4.6/../../../arm-linux-gnueabihf/crt1.o
+ *(.igot)
+
+.data           0x000132d4       0x58
+                0x000132d4                PROVIDE (__data_start, .)
+ *(.data .data.* .gnu.linkonce.d.*)
+ .data          0x000132d4        0x4 /usr/lib/gcc/arm-linux-gnueabihf/4.6/../../../arm-linux-gnueabihf/crt1.o
+                0x000132d4                data_start
+                0x000132d4                __data_start
+ .data          0x000132d8        0x0 /usr/lib/gcc/arm-linux-gnueabihf/4.6/../../../arm-linux-gnueabihf/crti.o
+ .data          0x000132d8        0x4 /usr/lib/gcc/arm-linux-gnueabihf/4.6/crtbegin.o
+                0x000132d8                __dso_handle
+ .data          0x000132dc        0x0 main.o
+ .data          0x000132dc        0x0 timer.o
+ .data          0x000132dc       0x30 debug.o
+ .data          0x0001330c        0x0 pid.o
+ .data          0x0001330c        0x0 pwm.o
+ .data          0x0001330c        0x0 pump.o
+ .data          0x0001330c        0x0 therm.o
+ .data          0x0001330c       0x20 /usr/local/lib/libbcm2835.a(bcm2835.o)
+                0x0001330c                bcm2835_gpio
+                0x00013310                bcm2835_pads
+                0x00013314                bcm2835_spi0
+                0x00013318                bcm2835_bsc1
+                0x0001331c                bcm2835_st
+                0x00013320                bcm2835_pwm
+                0x00013324                bcm2835_clk
+                0x00013328                bcm2835_bsc0
+ .data          0x0001332c        0x0 /usr/lib/gcc/arm-linux-gnueabihf/4.6/libgcc.a(_udivsi3.o)
+ .data          0x0001332c        0x0 /usr/lib/gcc/arm-linux-gnueabihf/4.6/libgcc.a(_dvmd_lnx.o)
+ .data          0x0001332c        0x0 /usr/lib/arm-linux-gnueabihf/libc_nonshared.a(elf-init.oS)
+ .data          0x0001332c        0x0 /usr/lib/gcc/arm-linux-gnueabihf/4.6/crtend.o
+ .data          0x0001332c        0x0 /usr/lib/gcc/arm-linux-gnueabihf/4.6/../../../arm-linux-gnueabihf/crtn.o
+
+.data1
+ *(.data1)
+                0x0001332c                _edata = .
+                0x0001332c                PROVIDE (edata, .)
+                0x0001332c                __bss_start = .
+                0x0001332c                __bss_start__ = .
+
+.bss            0x00013330       0x6c
+ *(.dynbss)
+ *fill*         0x00013330        0x0 00
+ .dynbss        0x00013330        0x4 /usr/lib/gcc/arm-linux-gnueabihf/4.6/../../../arm-linux-gnueabihf/crt1.o
+                0x00013330                stderr@@GLIBC_2.4
+ *(.bss .bss.* .gnu.linkonce.b.*)
+ .bss           0x00013334        0x0 /usr/lib/gcc/arm-linux-gnueabihf/4.6/../../../arm-linux-gnueabihf/crt1.o
+ .bss           0x00013334        0x0 /usr/lib/gcc/arm-linux-gnueabihf/4.6/../../../arm-linux-gnueabihf/crti.o
+ .bss           0x00013334        0x1 /usr/lib/gcc/arm-linux-gnueabihf/4.6/crtbegin.o
+ *fill*         0x00013335        0x3 00
+ .bss           0x00013338        0x4 main.o
+ .bss           0x0001333c       0x10 timer.o
+ .bss           0x0001334c        0x0 debug.o
+ .bss           0x0001334c        0x0 pid.o
+ .bss           0x0001334c       0x18 pwm.o
+ .bss           0x00013364        0x0 pump.o
+ .bss           0x00013364        0xc therm.o
+ .bss           0x00013370        0x8 /usr/local/lib/libbcm2835.a(bcm2835.o)
+ .bss           0x00013378        0x0 /usr/lib/gcc/arm-linux-gnueabihf/4.6/libgcc.a(_udivsi3.o)
+ .bss           0x00013378        0x0 /usr/lib/gcc/arm-linux-gnueabihf/4.6/libgcc.a(_dvmd_lnx.o)
+ .bss           0x00013378        0x0 /usr/lib/arm-linux-gnueabihf/libc_nonshared.a(elf-init.oS)
+ .bss           0x00013378        0x0 /usr/lib/gcc/arm-linux-gnueabihf/4.6/crtend.o
+ .bss           0x00013378        0x0 /usr/lib/gcc/arm-linux-gnueabihf/4.6/../../../arm-linux-gnueabihf/crtn.o
+ *(COMMON)
+ COMMON         0x00013378       0x24 pid.o
+                0x00013378                pid_params
+                0x0001339c                . = ALIGN ((. != 0x0)?0x4:0x1)
+                0x0001339c                _bss_end__ = .
+                0x0001339c                __bss_end__ = .
+                0x0001339c                . = ALIGN (0x4)
+                0x0001339c                . = ALIGN (0x4)
+                0x0001339c                __end__ = .
+                0x0001339c                _end = .
+                0x0001339c                PROVIDE (end, .)
+                0x0001339c                . = DATA_SEGMENT_END (.)
+
+.stab
+ *(.stab)
+
+.stabstr
+ *(.stabstr)
+
+.stab.excl
+ *(.stab.excl)
+
+.stab.exclstr
+ *(.stab.exclstr)
+
+.stab.index
+ *(.stab.index)
+
+.stab.indexstr
+ *(.stab.indexstr)
+
+.comment        0x00000000       0x22
+ *(.comment)
+ .comment       0x00000000       0x22 /usr/lib/gcc/arm-linux-gnueabihf/4.6/crtbegin.o
+                                 0x23 (size before relaxing)
+ .comment       0x00000000       0x23 main.o
+ .comment       0x00000000       0x23 timer.o
+ .comment       0x00000000       0x23 debug.o
+ .comment       0x00000000       0x23 pid.o
+ .comment       0x00000000       0x23 pwm.o
+ .comment       0x00000000       0x23 pump.o
+ .comment       0x00000000       0x23 therm.o
+ .comment       0x00000000       0x23 /usr/local/lib/libbcm2835.a(bcm2835.o)
+ .comment       0x00000000       0x23 /usr/lib/arm-linux-gnueabihf/libc_nonshared.a(elf-init.oS)
+ .comment       0x00000000       0x23 /usr/lib/gcc/arm-linux-gnueabihf/4.6/crtend.o
+
+.ARM.attributes
+                0x00000000       0x2f
+ .ARM.attributes
+                0x00000000       0x2f /usr/lib/gcc/arm-linux-gnueabihf/4.6/../../../arm-linux-gnueabihf/crt1.o
+ .ARM.attributes
+                0x0000002f       0x31 /usr/lib/gcc/arm-linux-gnueabihf/4.6/../../../arm-linux-gnueabihf/crti.o
+ .ARM.attributes
+                0x00000060       0x31 /usr/lib/gcc/arm-linux-gnueabihf/4.6/crtbegin.o
+ .ARM.attributes
+                0x00000091       0x31 main.o
+ .ARM.attributes
+                0x000000c2       0x31 timer.o
+ .ARM.attributes
+                0x000000f3       0x31 debug.o
+ .ARM.attributes
+                0x00000124       0x31 pid.o
+ .ARM.attributes
+                0x00000155       0x31 pwm.o
+ .ARM.attributes
+                0x00000186       0x31 pump.o
+ .ARM.attributes
+                0x000001b7       0x31 therm.o
+ .ARM.attributes
+                0x000001e8       0x31 /usr/local/lib/libbcm2835.a(bcm2835.o)
+ .ARM.attributes
+                0x00000219       0x1f /usr/lib/gcc/arm-linux-gnueabihf/4.6/libgcc.a(_udivsi3.o)
+ .ARM.attributes
+                0x00000238       0x1f /usr/lib/gcc/arm-linux-gnueabihf/4.6/libgcc.a(_dvmd_lnx.o)
+ .ARM.attributes
+                0x00000257       0x31 /usr/lib/arm-linux-gnueabihf/libc_nonshared.a(elf-init.oS)
+ .ARM.attributes
+                0x00000288       0x31 /usr/lib/gcc/arm-linux-gnueabihf/4.6/crtend.o
+ .ARM.attributes
+                0x000002b9       0x31 /usr/lib/gcc/arm-linux-gnueabihf/4.6/../../../arm-linux-gnueabihf/crtn.o
+
+.debug
+ *(.debug)
+
+.line
+ *(.line)
+
+.debug_srcinfo
+ *(.debug_srcinfo)
+
+.debug_sfnames
+ *(.debug_sfnames)
+
+.debug_aranges  0x00000000       0x20
+ *(.debug_aranges)
+ .debug_aranges
+                0x00000000       0x20 /usr/local/lib/libbcm2835.a(bcm2835.o)
+
+.debug_pubnames
+ *(.debug_pubnames)
+
+.debug_info     0x00000000     0x1921
+ *(.debug_info .gnu.linkonce.wi.*)
+ .debug_info    0x00000000     0x1921 /usr/local/lib/libbcm2835.a(bcm2835.o)
+
+.debug_abbrev   0x00000000      0x3cf
+ *(.debug_abbrev)
+ .debug_abbrev  0x00000000      0x3cf /usr/local/lib/libbcm2835.a(bcm2835.o)
+
+.debug_line     0x00000000      0x55c
+ *(.debug_line)
+ .debug_line    0x00000000      0x55c /usr/local/lib/libbcm2835.a(bcm2835.o)
+
+.debug_frame    0x00000000      0x534
+ *(.debug_frame)
+ .debug_frame   0x00000000      0x534 /usr/local/lib/libbcm2835.a(bcm2835.o)
+
+.debug_str      0x00000000      0xc30
+ *(.debug_str)
+ .debug_str     0x00000000      0xc30 /usr/local/lib/libbcm2835.a(bcm2835.o)
+                                0xcb4 (size before relaxing)
+
+.debug_loc      0x00000000     0x16cd
+ *(.debug_loc)
+ .debug_loc     0x00000000     0x16cd /usr/local/lib/libbcm2835.a(bcm2835.o)
+
+.debug_macinfo
+ *(.debug_macinfo)
+
+.debug_weaknames
+ *(.debug_weaknames)
+
+.debug_funcnames
+ *(.debug_funcnames)
+
+.debug_typenames
+ *(.debug_typenames)
+
+.debug_varnames
+ *(.debug_varnames)
+
+.debug_pubtypes
+ *(.debug_pubtypes)
+
+.debug_ranges   0x00000000       0x30
+ *(.debug_ranges)
+ .debug_ranges  0x00000000       0x30 /usr/local/lib/libbcm2835.a(bcm2835.o)
+
+.gnu.attributes
+ *(.gnu.attributes)
+
+.note.gnu.arm.ident
+ *(.note.gnu.arm.ident)
+
+/DISCARD/
+ *(.note.GNU-stack)
+ *(.gnu_debuglink)
+ *(.gnu.lto_*)
+OUTPUT(cook elf32-littlearm)

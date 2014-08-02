@@ -148,7 +148,7 @@ void pwm_set_duty(uint32 duty)
   pwm_time_duration_low  = PWM_TIME_UNIT * (PWM_MAX_DUTY_CYCLE - duty);
   pwm_current_duty       = duty;
 
-  DEBUG_MSG_MID(DEBUG_MODULE_PWM, "Duty cycle update, duty: %d%%, high_duration: %d(ms), low_duration: %d(ms)", 
+  DEBUG_MSG_MED(DEBUG_MODULE_PWM, "Duty cycle update, duty: %d%%, high_duration: %d(ms), low_duration: %d(ms)", 
                 duty, pwm_time_duration_high, pwm_time_duration_low);
 }
 

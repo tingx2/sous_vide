@@ -20,8 +20,13 @@
 #include "pwm.h"
 #include "pump.h"
 
-// XXX therm for debug
-static uint32 loop_count = 0;
+
+/**********************************************************************
+
+  Program variables
+
+**********************************************************************/
+therm_reading_t temperature;
 
 /*********************************************************************
   
@@ -52,11 +57,9 @@ int main()
   /* Main Program Loop */
   while (1)
   {
-
     pwm_run();
-    if (loop_count++ > 10000000)  /* XXX Run for 10 seconds */
-      break;
-
+    therm_capture();    
+    therm_read(&temperature);
   }
 
   pump_stop();
