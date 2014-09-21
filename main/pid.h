@@ -18,9 +18,12 @@
 
 /**********************************************************************
 
-  Structure Definitions
+  Structure Definitions/Constants
 
 **********************************************************************/
+
+/* Scale the raw PID output by this factor. */
+#define PID_SCALING_FACTOR 10
 
 /*
   Control Loop
@@ -43,12 +46,6 @@ typedef struct
 
 **********************************************************************/
 
-/*
-  Returns the most recent,
-	unscaled PID output.
-*/
-float pid_get_pid_output_raw();
-
 /* 
   Updates the set temperature
   to converge to in the PID loop.
@@ -64,5 +61,14 @@ void pid_set_gain(pid_gain_params *params);
   Main PID control loop
 */
 void pid_loop();
+
+/*
+  PID initialization
+*/
+void pid_init();
+
+/* PID de-initialization
+*/
+void pid_deinit();
 
 #endif // PID_H

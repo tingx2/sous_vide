@@ -23,7 +23,7 @@
 **********************************************************************/
 
 #define GPIO_4      (RPI_GPIO_P1_07)
-#define GPIO_18     (RPI_GPIO_P1_11)
+#define GPIO_18     (RPI_GPIO_P1_12)
 #define GPIO_25     (RPI_GPIO_P1_22)
 
 #define GPIO_THERM  (GPIO_4)

@@ -27,4 +27,7 @@ typedef bool boolean;
 #define MAX_INT       0xFFFFFFFF
 #define MAX_LONGINT   0xFFFFFFFFFFFFFFFF
 
+#define MAX(a,b) (a > b) ? a : b
+#define MIN(a,b) (a < b) ? a : b
+
 #endif // TYPES_H

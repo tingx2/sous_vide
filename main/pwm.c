@@ -121,6 +121,7 @@ void pwm_run()
 */
 void pwm_stop()
 {
+  PWM_GPIO_CLR();
   pwm_is_running = FALSE;
 }
 

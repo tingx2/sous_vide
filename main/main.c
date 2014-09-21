@@ -50,22 +50,29 @@ int main()
   pwm_init();
   pump_init();
   therm_init();
+  pid_init();
 
   pump_start();
-  pwm_set_duty(25);
+  pid_update_temp_setpoint(50);
+  pid_gain_params pid_gain;
+  pid_gain.k_p = 1;
+  pid_gain.k_d = 1;
+  pid_gain.k_i = 0;
+  pid_set_gain(&pid_gain);
 
   /* Main Program Loop */
   while (1)
   {
     pwm_run();
-    therm_capture();    
-    therm_read(&temperature);
+    therm_capture();
+    pid_loop();
   }
 
   pump_stop();
 
   /* De-initializations */
   pump_deinit();
+  pid_deinit();
   pwm_deinit();
 
   /* This should be after all GPIO activities. */

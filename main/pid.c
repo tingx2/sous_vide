@@ -1,7 +1,7 @@
 /* 
   pid.c
 
-    Source file for PID related routines.
+  Source file for PID related routines.
 
 */
 
@@ -15,6 +15,7 @@
 #include "timer.h"
 #include "pid.h"
 #include "pwm.h"
+#include "therm.h"
 
 /**********************************************************************
 
@@ -22,11 +23,13 @@
 
 **********************************************************************/
 
+#define PID_LOOP_WAIT_IN_NS 750000 /* Wait 750us before updating PID */
+
 /*
   Control Loop
-    Error Parameters
+  Error Parameters
 
-  err   : Current Error
+    err   : Current Error
     err_i : Integral Error
     err_d : Derivative Error
 */
@@ -48,9 +51,15 @@ typedef struct
   pid_gain_params gain;             /* Loop parameters */   
   pid_error_params error;           /* Error pameters */
   float temp_setpoint;              /* Desired temperature (in Celsius) */
-  float temp_current;               /* Current Temperature */
-  float pid_output_raw;             /* PID output */
+  therm_reading_t temp;             /* Current Temperature */
 } pid_main_params;
+
+/* PID state */
+ typedef enum
+ {
+   PID_STOPPED,
+   PID_RUNNING,
+ } pid_state_e;
 
 /**********************************************************************
 
@@ -61,91 +70,23 @@ typedef struct
 /* Main Loop Parameters */
 pid_main_params pid_params;
 
+ /* PID loop state */
+static pid_state_e pid_state;
+
+/* The system timestamp when the last time PID update occurred. */
+static uint32 pid_last_timestamp;
+
 /**********************************************************************
 
   Functions
 
 **********************************************************************/
 
-pid_gain_params *pid_get_gain();
-pid_error_params *pid_get_error();
-float pid_get_temp_setpoint();
-float pid_get_temp_current();
-
-void pid_update_temp_current(float temp);
-void pid_update_gain(pid_gain_params *params);
-void pid_update_output_raw(float pid_output);
-
 /*
-  pid_gain_params *pid_get_gain()
+  void pid_update_temp_setpoint()
 
-    Returns a pointer to the gain
-    parameters of the control loop.
-*/
-pid_gain_params *pid_get_gain()
-{
-  return (&(pid_params.gain));
-}
-
-/*
-  pid_error_params *get_error()
-
-    Returns a pointer to the error
-    parameters of the control loop.
-*/
-pid_error_params *pid_get_error()
-{
-  return (&(pid_params.error));
-}
-
-/*
-  float pid_get_temp_setpoint()
-
-    Gets the set temperature.
-*/
-float pid_get_temp_setpoint()
-{
-  return (pid_params.temp_setpoint); 
-}
-
-/* 
-  float pid_get_temp_current();
-
-    Gets the current temperature
-    read out by the sensor.
-*/
-float pid_get_temp_current()
-{
-  return (pid_params.temp_current);
-}
-
-/*
-  float pid_get_pid_output_raw()
-
-    Gets the latest PID
-    output calculated.
-*/
-float pid_get_pid_output_raw()
-{
-  return (pid_params.pid_output_raw);
-}
-
-/*
-  float pid_update_temp_current
-
-    Updates the current temperature
-    in the control loop.
-*/
-void pid_update_temp_current(float temp)
-{
-  pid_params.temp_current = temp;
-}
-
-/*
-  float pid_update_temp_setpoint
-
-    Updates the desired temperature
-    to be reached by the control loop.
+  Updates the set temperature
+  to converge to in the PID loop.
 */
 void pid_update_temp_setpoint(float temp)
 {
@@ -153,13 +94,13 @@ void pid_update_temp_setpoint(float temp)
 }
 
 /*
-  float pid_update_output_raw
+  void pid_set_gain()
 
-    Updates the PID output value.
+  Updates the gain loop parameters.
 */
-void pid_update_output_raw(float pid_output)
+void pid_set_gain(pid_gain_params *gain)
 {
-  pid_params.pid_output_raw = pid_output;
+  pid_params.gain = *gain;
 }
 
 /*
@@ -171,27 +112,85 @@ void pid_update_output_raw(float pid_output)
 */
 void pid_loop()
 {
-  pid_gain_params *gain_p =
-      pid_get_gain();
+  if (pid_state != PID_RUNNING)
+    return;
 
-  pid_error_params *error_p =
-      pid_get_error();
+  uint32 dummy_time;
+  boolean is_update_pid =
+    timer_is_elapsed32((pid_last_timestamp + PID_LOOP_WAIT_IN_NS), &dummy_time);
+  if (!is_update_pid)
+  {
+    DEBUG_MSG_HIGH(DEBUG_MODULE_PID, "Timer not expired. Time: %d", dummy_time);
+    return;
+  }
 
-    float t_current =
-      pid_get_temp_current();
+  /* Update the last time PID was read for scheduling next iteration. */
+  pid_last_timestamp = timer_read32();
 
-  float t_desired =
-      pid_get_temp_setpoint();
+  /* Read updated temperatures. If last reading was invalid,
+     skip this PID loop iteration. */
+  therm_reading_t *temp = &(pid_params.temp);
+  therm_read(temp);
+  if (!temp->is_valid)
+  {
+    DEBUG_MSG_HIGH(DEBUG_MODULE_PID, "Temperature read failed");
+    return;
+  }
 
-  /* Core PID Loop */
-  error_p->err   = t_current - t_desired;
-    error_p->err_i = error_p->err_i + error_p->err;
-    error_p->err_d = error_p->err   - error_p->err_d;
+  /* Do PID calculation. */
+  float t_current = pid_params.temp.temperature;
+  float t_desired = pid_params.temp_setpoint;
+  pid_gain_params *gain_p = &(pid_params.gain);
+  pid_error_params *error_p = &(pid_params.error);
 
-    float p, i, d;
-    p = gain_p->k_p * error_p->err;
-    i = gain_p->k_i * error_p->err_i;
-    d = gain_p->k_d * error_p->err_d;
+  float err, err_i, err_d;
+  err   = t_desired - t_current;
+  err_i = err + error_p->err_i;
+  err_d = err - error_p->err;
 
-  pid_update_output_raw( p+i+d );
+  error_p->err = err;
+  error_p->err_i = err_i;
+  error_p->err_d = err_d;
+
+  float p, i, d;
+  p = gain_p->k_p * error_p->err;
+  i = gain_p->k_i * error_p->err_i;
+  d = gain_p->k_d * error_p->err_d;
+
+  /* Scale/saturate the PID output and set the duty cycle. */
+  float pid_raw = p + i + d;
+  pid_raw *= PID_SCALING_FACTOR;
+
+  /* Add 0.5 to do rounding with truncation. */
+  float pid_scaled = pid_raw + 0.5;
+  pid_scaled = MAX(pid_raw, 0);
+  pid_scaled = MIN(pid_raw, 100);
+
+  pwm_set_duty((uint32)pid_scaled);
+
+  DEBUG_MSG_MED(DEBUG_MODULE_PID, "err: %5.2f, err_d: %5.2f, err_i: %5.2f",
+                 error_p->err, error_p->err_d, error_p->err_i);
+  DEBUG_MSG_MED(DEBUG_MODULE_PID, "pid_raw: %5.2f, pid_scaled: %d",
+                 pid_raw, (uint32)pid_scaled);
+}
+
+/*
+  PID initialization
+*/
+void pid_init()
+{
+  pid_state = PID_RUNNING;
+
+  memset(&pid_params, 0x0, sizeof(pid_params));
+
+  /* Update the last time PID was read for scheduling next iteration. */
+  pid_last_timestamp = timer_read32();
+
+}
+
+/* PID de-initialization
+*/
+void pid_deinit()
+{
+  pid_state = PID_STOPPED;
 }

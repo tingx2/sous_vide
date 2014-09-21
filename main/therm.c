@@ -292,7 +292,11 @@ static void therm_byte_out(uint8 byte)
 static void therm_scrpad_rd()
 {
   boolean failed = therm_handshake();
-  assert(!failed);
+  if (failed)
+  {
+    DEBUG_MSG_LOW(DEBUG_MODULE_THERM, "therm_scrpad_rd: handshake fail");
+    //assert(0);
+  }
 
   therm_byte_out(DS1820_CMD_SKIPROM);
   therm_byte_out(DS1820_CMD_READSCRPAD);
@@ -330,7 +334,7 @@ static boolean therm_read_internal(therm_reading_t *therm_reading)
   {
     therm_reading->is_valid = FALSE;
     DEBUG_MSG_LOW(DEBUG_MODULE_THERM, "CRC (calculated)0x%x != 0x%x(scratchpad)",
-                  crc, scrpad[DS1820_SCRPADMEM_CRC_BYTE]);   
+                  crc, scrpad[DS1820_SCRPADMEM_CRC_BYTE]);
     return FALSE;
   }
 
@@ -352,7 +356,11 @@ void therm_capture()
   }
 
   boolean failed = therm_handshake();
-  assert(!failed);
+  if (failed)
+  {
+    DEBUG_MSG_LOW(DEBUG_MODULE_THERM, "therm_scrpad_rd: handshake fail");
+    //assert(0);
+  } 
 
   therm_byte_out(DS1820_CMD_SKIPROM);
   therm_byte_out(DS1820_CMD_CONVERTTEMP);
@@ -374,6 +382,10 @@ void therm_capture()
 */
 void therm_read(therm_reading_t *therm_reading)
 {
+  therm_reading->is_valid = FALSE;
+  therm_reading->temperature = 0;
+  therm_reading->timestamp = 0;
+
   if (therm_capture_state != THERM_CAPTURE_WAITING)
   {
     return;
@@ -386,10 +398,6 @@ void therm_read(therm_reading_t *therm_reading)
   {
   	return;
   }
-
-  therm_reading->is_valid = FALSE;
-  therm_reading->temperature = 0;
-  therm_reading->timestamp = 0;
 
   therm_capture_state = THERM_CAPTURE_READY;
 
