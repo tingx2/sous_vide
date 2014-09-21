@@ -291,7 +291,9 @@ static void therm_byte_out(uint8 byte)
 */
 static void therm_scrpad_rd()
 {
-  therm_handshake();
+  boolean failed = therm_handshake();
+  assert(!failed);
+
   therm_byte_out(DS1820_CMD_SKIPROM);
   therm_byte_out(DS1820_CMD_READSCRPAD);
 
@@ -349,7 +351,9 @@ void therm_capture()
     return;
   }
 
-  therm_handshake();
+  boolean failed = therm_handshake();
+  assert(!failed);
+
   therm_byte_out(DS1820_CMD_SKIPROM);
   therm_byte_out(DS1820_CMD_CONVERTTEMP);
   therm_last_timestamp = timer_read32();
