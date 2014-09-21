@@ -22,9 +22,6 @@
 
 **********************************************************************/
 
-/* Scale the raw PID output by this factor. */
-#define PID_SCALING_FACTOR 10
-
 /*
   Control Loop
 	Gain Parameters
@@ -38,6 +35,7 @@ typedef struct
   float k_p;
 	float k_i;
 	float k_d;
+  float k_windup;
 } pid_gain_params;
 
 /**********************************************************************

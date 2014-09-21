@@ -12,6 +12,7 @@
 **********************************************************************/
 
 #include <bcm2835.h>
+#include "stdio.h"
 #include "types.h"
 #include "debug.h"
 #include "timer.h"
@@ -53,11 +54,18 @@ int main()
   pid_init();
 
   pump_start();
-  pid_update_temp_setpoint(50);
+
+  /* Take temperature as input from console. */
+  float setpoint;
+  printf("Set your desired temperature: ");
+  scanf("%f", &setpoint);
+  pid_update_temp_setpoint(setpoint);
+
   pid_gain_params pid_gain;
   pid_gain.k_p = 1;
   pid_gain.k_d = 1;
-  pid_gain.k_i = 0;
+  pid_gain.k_i = 1;
+  pid_gain.k_windup = 1;
   pid_set_gain(&pid_gain);
 
   /* Main Program Loop */

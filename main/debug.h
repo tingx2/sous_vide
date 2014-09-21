@@ -18,7 +18,7 @@
 #include "types.h"
 
 /**********************************************************************
-
+  
   Definitions
 
 **********************************************************************/
@@ -26,6 +26,7 @@
 /* Set the debug options using these flag */
 #define DEBUG_CURRENT_VERBOSITY   DEBUG_VERBOSE_MED
 #define DEBUG_CURRENT_OUTPUT      DEBUG_OUTPUT_STDIO
+//#define DEBUG_CURRENT_OUTPUT      DEBUG_OUTPUT_FILE
 
 /* Selects either file or terminal as the output location
    for debug messages */

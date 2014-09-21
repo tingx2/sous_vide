@@ -419,7 +419,7 @@ void therm_read(therm_reading_t *therm_reading)
   therm_reading->temperature = ( (float)((uint32)scrpad[DS1820_REG_TEMPLSB] +
                                  ((uint32)(scrpad[DS1820_REG_TEMPMSB]&0xf)<<0x8)) ) * 0.0625;
 
-  DEBUG_MSG_MED(DEBUG_MODULE_THERM, "Temperature: %4.4f celsius ", therm_reading->temperature);
+  DEBUG_MSG_LOW(DEBUG_MODULE_THERM, "Temperature: %4.4f celsius ", therm_reading->temperature);
 }
 
 /*

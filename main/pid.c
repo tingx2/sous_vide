@@ -94,6 +94,22 @@ void pid_update_temp_setpoint(float temp)
 }
 
 /*
+  void pid_ZN_gain()
+
+  Set the gain parameters using Ziegel-Nichols
+  step_response algorithm.
+*/
+#if 0
+void pid_ZN_gain(ZN_params_t *ZN_params)
+{
+  pid_params.gain = 1.2 / ZN_;
+  pid_params.gain.k_p = 3.4 * ZN_params.L;
+  pid_params.gain.k = 0.5 * ZN_params.L;
+  pid_gain.k_i = 2 *;
+}
+#endif
+
+/*
   void pid_set_gain()
 
   Updates the gain loop parameters.
@@ -145,33 +161,37 @@ void pid_loop()
 
   float err, err_i, err_d;
   err   = t_desired - t_current;
-  err_i = err + error_p->err_i;
+  err_i = err + error_p->err_i;  
   err_d = err - error_p->err;
 
-  error_p->err = err;
-  error_p->err_i = err_i;
-  error_p->err_d = err_d;
-
   float p, i, d;
-  p = gain_p->k_p * error_p->err;
-  i = gain_p->k_i * error_p->err_i;
-  d = gain_p->k_d * error_p->err_d;
+  p = gain_p->k_p * err;
+  i = gain_p->k_i * err_i;  
+  d = gain_p->k_d * err_d;
 
   /* Scale/saturate the PID output and set the duty cycle. */
   float pid_raw = p + i + d;
-  pid_raw *= PID_SCALING_FACTOR;
 
   /* Add 0.5 to do rounding with truncation. */
   float pid_scaled = pid_raw + 0.5;
   pid_scaled = MAX(pid_raw, 0);
-  pid_scaled = MIN(pid_raw, 100);
+  pid_scaled = MIN(pid_scaled, 100);
+
 
   pwm_set_duty((uint32)pid_scaled);
 
-  DEBUG_MSG_MED(DEBUG_MODULE_PID, "err: %5.2f, err_d: %5.2f, err_i: %5.2f",
-                 error_p->err, error_p->err_d, error_p->err_i);
-  DEBUG_MSG_MED(DEBUG_MODULE_PID, "pid_raw: %5.2f, pid_scaled: %d",
-                 pid_raw, (uint32)pid_scaled);
+  /* Calculate saturation error for anti-windup loop. */
+  float err_saturate = (pid_scaled - pid_raw) * (gain_p->k_windup);
+
+  /* Update error for next iteration. */
+  error_p->err = err;
+  error_p->err_d = err_d;
+  error_p->err_i = err_i + err_saturate;
+
+  DEBUG_MSG_MED(DEBUG_MODULE_PID, "err: %5.2f, err_d: %5.2f, err_i: %5.2f, err_sat: %5.2f",
+                 error_p->err, error_p->err_d, error_p->err_i, err_saturate);
+  DEBUG_MSG_MED(DEBUG_MODULE_PID, "pid_raw: %5.2f, pid_scaled: %5.2f",
+                 pid_raw, pid_scaled);
 }
 
 /*
